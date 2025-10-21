@@ -1,0 +1,1 @@
+to run scraper for categories use python3 ./scraper categories command
