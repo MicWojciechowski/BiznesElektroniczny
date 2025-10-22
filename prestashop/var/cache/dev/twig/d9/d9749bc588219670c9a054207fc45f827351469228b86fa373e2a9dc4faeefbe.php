@@ -11,7 +11,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @PrestaShop/Admin/layout.html.twig */
+/* PrestaShopBundle:Admin:layout.html.twig */
 class __TwigTemplate_bfb1872d950c32cea568018501683a3ee0f12804bec2de203b8e3fa0373e7de2 extends \Twig\Template
 {
     public function __construct(Environment $env)
@@ -40,19 +40,19 @@ array_key_exists("headerTabContent", $context)) ? (($context["headerTabContent"]
 array_key_exists("enableSidebar", $context)) ? (($context["enableSidebar"] ?? $this->getContext($context, "enableSidebar"))) : (false)), ((        // line 34
 array_key_exists("help_link", $context)) ? (($context["help_link"] ?? $this->getContext($context, "help_link"))) : ("")), $this->env->getExtension('PrestaShopBundle\Twig\Extension\JsRouterMetadataExtension')->getJsRouterMetadata(), ((        // line 36
 array_key_exists("meta_title", $context)) ? (($context["meta_title"] ?? $this->getContext($context, "meta_title"))) : ("")), ((        // line 37
-array_key_exists("use_regular_h1_structure", $context)) ? (($context["use_regular_h1_structure"] ?? $this->getContext($context, "use_regular_h1_structure"))) : (true)))), "@PrestaShop/Admin/layout.html.twig", 25);
+array_key_exists("use_regular_h1_structure", $context)) ? (($context["use_regular_h1_structure"] ?? $this->getContext($context, "use_regular_h1_structure"))) : (true)))), "PrestaShopBundle:Admin:layout.html.twig", 25);
     }
 
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@PrestaShop/Admin/layout.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "PrestaShopBundle:Admin:layout.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@PrestaShop/Admin/layout.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "PrestaShopBundle:Admin:layout.html.twig"));
 
         // line 41
-        $context["ps"] = $this->loadTemplate("@PrestaShop/Admin/macros.html.twig", "@PrestaShop/Admin/layout.html.twig", 41)->unwrap();
+        $context["ps"] = $this->loadTemplate("@PrestaShop/Admin/macros.html.twig", "PrestaShopBundle:Admin:layout.html.twig", 41)->unwrap();
         // line 25
         $this->getParent($context)->display($context, array_merge($this->blocks, $blocks));
         
@@ -332,7 +332,7 @@ array_key_exists("use_regular_h1_structure", $context)) ? (($context["use_regula
 
     public function getTemplateName()
     {
-        return "@PrestaShop/Admin/layout.html.twig";
+        return "PrestaShopBundle:Admin:layout.html.twig";
     }
 
     public function isTraitable()
@@ -463,6 +463,6 @@ array_key_exists("use_regular_h1_structure", $context)) ? (($context["use_regula
     />
   </nav>
 {% endblock %}
-", "@PrestaShop/Admin/layout.html.twig", "/var/www/html/src/PrestaShopBundle/Resources/views/Admin/layout.html.twig");
+", "PrestaShopBundle:Admin:layout.html.twig", "/var/www/html/src/PrestaShopBundle/Resources/views/Admin/layout.html.twig");
     }
 }
