@@ -36,15 +36,15 @@ class Product:
    
     def __repr__(self):
         return (
-            f"{self.id},"
-            f"{self.name},"
-            f"{self.url or ''},"
-            f"{self.category or ''},"
-            f"{self.imageUrls},"
-            f"{self.description},"
-            f"{self.price if self.price is not None else ''},"
-            f"{self.stock if self.stock is not None else ''},"
-            f"{self.manufacturer or ''}"
+            f"{self.id};"
+            f"{self.name};"
+            f"{self.url or ''};"
+            f"{self.category or ''};"
+            f"{self.imageUrls};"
+            f"{self.description};"
+            f"{self.price if self.price is not None else ''};"
+            f"{self.stock if self.stock is not None else ''};"
+            f"{self.manufacturer or ''};1;1;1;1;10;0;0;0;"
         )
 
 
@@ -132,8 +132,8 @@ def scrapeFromProductPage(url,newProduct):
 
     allDescriptionP = soup.find("div", class_="product-description").find_all("p")
     for description in allDescriptionP:
-        newProduct.description += description.string + "\n" if description.string != None else ""
-
+        newProduct.description += description.string + " " if description.string != None else ""
+    newProduct.description = newProduct.description.replace(";","")
     images = soup.find_all("img", class_="pro_gallery_item", limit=2)
     for image in images:
         newProduct.imageUrls += image["src"] + ","
@@ -163,10 +163,7 @@ def productScraperLauncher(categories , limit):
 
 
 def load_categories_from_file(path: str) -> list[categories]:
-    """
-    Reads semicolon-separated lines created by Category.__repr__
-    and rebuilds Category objects with correct parent relationships.
-    """
+ 
     categories: List[Category] = []
     id_map: Dict[int, Category] = {}
 
@@ -179,7 +176,7 @@ def load_categories_from_file(path: str) -> list[categories]:
 
             parts = line.split(";")
             if len(parts) < 11:
-                continue  # skip malformed lines
+                continue  
 
             cat_id = int(parts[0])
             name = parts[2].strip()
@@ -201,13 +198,10 @@ def load_categories_from_file(path: str) -> list[categories]:
             id_map[cat_id] = cat
             categories.append(cat)
 
-    # Update counter
     if id_map:
         Category._id_counter = max(id_map.keys()) + 1
 
-    # Second pass: link parents
     for cat in categories:
-        # If parent_id == 2 → means root, per your __repr__
         parent_id = cat.parent
         if parent_id != 2 and parent_id in id_map:
             cat.parent = id_map[parent_id]
@@ -227,11 +221,8 @@ if __name__ == "__main__":
         createCsv("categories", categories)
         
     if(arg1 == "products"):
-        limit = 0 
-        if sys.argv[2]:
-            limit = sys.argv[2]
         categories = load_categories_from_file("./categories.csv")
-        productScraperLauncher(categories,limit)
+        productScraperLauncher(categories,0)
         createCsv("products", products)
 
 
