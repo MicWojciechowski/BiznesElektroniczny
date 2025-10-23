@@ -3,10 +3,12 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from urllib.parse import urlparse
 import sys
-
-
+from lxml import etree
+import os
+import csv
 BASE_URL = "https://flyhouse.pl/"
 
+from dotenv import load_dotenv
 
 class Product:
     _id_counter = 2
@@ -210,12 +212,119 @@ def load_categories_from_file(path: str) -> list[categories]:
     return categories
 
 
+
+def load_products_from_file(path: str) -> list[Product]:
+    products: list[Product] = []
+
+    with open(path, "r", encoding="utf-8") as f:
+        reader = csv.reader(f, delimiter=';')
+
+        for row in reader:
+            if not row or len(row) < 9:
+                continue 
+
+            try:
+                product = Product(
+                    name=row[1].strip(),
+                    url=row[2].strip() if row[2] else None
+                )
+                product.id = int(row[0])
+                product.category = row[3].strip() if row[3] else None
+                product.imageUrls = row[4].strip()
+                product.description = row[5].strip()
+                product.price = float(row[6]) if row[6] else None
+                product.stock = int(float(row[7])) if row[7] else None
+                product.manufacturer = row[8].strip()
+
+                products.append(product)
+
+            except Exception as e:
+                print(f" Error parsing line: {row}\n{e}")
+
+    if products:
+        Product._id_counter = max(p.id for p in products) + 1
+
+    return products
+
+
+
+def categoriesUploader(category):
+    # Load .env file
+
+    # Access environment variables
+    api_key = os.getenv("PRESTASHOP_API_KEY")
+
+    prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
+
+    targety = etree.SubElement(prestashop, "targety")
+
+    fields = {
+        # "id": category.id,
+        "id_parent": category.parent.id if (category.parent != None) else 2,
+        "active": 1,
+        "is_root_category": 1 if (category.parent == None) else 0,
+        "id_shop_default": 0,
+        "is_root_category": 0,
+    }
+
+    multilang_values = {
+        "name": { "1": category.name },
+         "link_rewrite": { "1": "wedki-muchowe" },
+        "description": { "1": category.description},
+        "meta_title": { "1": category.name},
+        # "meta_description": { "1": },
+        # "meta_keywords": { "1": ""},
+    }
+
+    for name, value in fields.items():
+        el = etree.SubElement(targety, name)
+        el.text = etree.CDATA(str(value))
+
+    for field_name, lang_dict in multilang_values.items():
+        field_el = etree.SubElement(targety, field_name)
+        for lang_id, text_value in lang_dict.items():
+            lang_el = etree.SubElement(field_el, "language", id=str(lang_id))
+            lang_el.text = etree.CDATA(text_value)
+
+    # associations = etree.SubElement(targety, "associations")
+
+    # subcategories = etree.SubElement(associations, "categories")
+    # subcat = etree.SubElement(subcategories, "category")
+    # subcat_id = etree.SubElement(subcat, "id")
+    # subcat_id.text = etree.CDATA("")
+
+    # products = etree.SubElement(associations, "products")
+    # prod = etree.SubElement(products, "product")
+    # prod_id = etree.SubElement(prod, "id")
+    # prod_id.text = etree.CDATA("")
+
+    xml_data = etree.tostring(prestashop, encoding="utf-8", xml_declaration=True, pretty_print=True)
+
+    headers = {"Content-Type": "application/xml", "Accept": "application/xml"}
+    response = requests.post("http://localhost:8080/api/categories", auth=(api_key, ""), headers=headers, data=xml_data)
+
+    # Check result
+    if response.status_code in (200, 201):
+        print("✅ Category created successfully!")
+        category.id = response.text[response.text.find("<id>") + 13 :  response.text.find("</id>")-3 ]
+    else:
+        print(f"❌ Failed to create category. Status code: {response.status_code}")
+        print(response.text)
+
+
 if __name__ == "__main__":
 
 
     if len(sys.argv) > 1:
         arg1 = sys.argv[1]
     
+    if(arg1 == "upload"):
+        categories = load_categories_from_file("./categories.csv")
+        products = load_products_from_file("./products.csv")
+        load_dotenv()  
+        for category in categories:
+            categoriesUploader(category)
+
     if(arg1 == "categories"):
         categoriess = scrapeMainCategories(BASE_URL)
         createCsv("categories", categories)
