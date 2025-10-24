@@ -28,7 +28,8 @@ class Product:
         self.stock = None
         self.manufacturer = None
         self.categoryObj = None
-        
+        self.imageId = None
+
     def get_last_path_segment(self):
         parsed = urlparse(self.url)
         path = parsed.path   
@@ -38,6 +39,27 @@ class Product:
         return None
 
     
+    def downloadImage(self):
+ 
+        image_urls = [url.strip() for url in self.imageUrls.split(",") if url.strip()]
+        os.makedirs("img/products", exist_ok=True)
+        iterator = 0
+        for image_url in image_urls:
+                print(f"️Downloading image: {image_url}")
+                response = requests.get(image_url, timeout=15)
+                response.raise_for_status()
+
+                if not response.headers.get("Content-Type", "").startswith("image/"):
+                    print(f"Skipping {image_url}: not an image")
+                    continue
+                filename = os.path.basename( f"product_{product.id}_{iterator}.jpg")
+                filepath = os.path.join("img/products", filename)
+
+                with open(filepath, "wb") as f:
+                    f.write(response.content)
+                iterator +=1
+
+
     def uploadImagesToApi(self):
         load_dotenv()
         api_key = os.getenv("PRESTASHOP_API_KEY")
@@ -46,35 +68,31 @@ class Product:
             raise ValueError("Missing PRESTASHOP_API_KEY in .env")
 
         image_urls = [url.strip() for url in self.imageUrls.split(",") if url.strip()]
-
+        iterator = 0
         for image_url in image_urls:
             try:
-                print(f"️Downloading image: {image_url}")
-                response = requests.get(image_url, timeout=15)
-                response.raise_for_status()
-
-                if not response.headers.get("Content-Type", "").startswith("image/"):
-                    print(f"Skipping {image_url}: not an image")
+               
+                filename = os.path.basename(f"product_{self.imageId}_{iterator}.jpg")
+                filepath = os.path.join("./img/products", filename)
+                if not os.path.exists(filepath):
+                    print(f"Skipping missing file: {filepath}")
                     continue
-
-                # Extract a filename
-                filename = os.path.basename(image_url.split("?")[0]) or f"product_{self.id}.jpg"
-
+                
                 print(f"Uploading {filename} to PrestaShop...")
                 upload_url = f"http://localhost:8080/api/images/products/{self.id}"
 
-                upload_response = requests.post(
-                    upload_url,
-                    auth=(api_key, ""),
-                    files={"image": (filename, BytesIO(response.content))}
-                )
-
+                with open(filepath, "rb") as f:
+                    upload_response = requests.post(
+                        upload_url,
+                        auth=(api_key, ""),
+                        files={"image": (filename, f, "image/jpeg")}
+                    )
                 if upload_response.status_code in (200, 201):
                     print(f"Uploaded {filename} successfully!")
                 else:
                     print(f"Failed to upload {filename}: {upload_response.status_code}")
                     print(upload_response.text)
-
+                iterator += 1
             except requests.RequestException as e:
                 print(f"Error processing {image_url}: {e}")
             
@@ -108,6 +126,7 @@ class Category:
         self.subcategories = []
         self.imageUrl = ""
         self.description = ""
+        self.imageId = None
         
     def get_last_path_segment(self):
         parsed = urlparse(self.url)
@@ -117,11 +136,60 @@ class Category:
             return segments[-1]
         return None
 
+    def downloadImage(self):
+
+        os.makedirs("img/categories", exist_ok=True)
+        if (self.imageUrl == ""):
+            return 0
+        print(f"️Downloading image: {self.imageUrl}")
+        response = requests.get(self.imageUrl, timeout=15)
+        response.raise_for_status()
+
+        if not response.headers.get("Content-Type", "").startswith("image/"):
+            print(f"Skipping {self.imageUrl}: not an image")
+            return None
+        filename = os.path.basename( f"category_{self.id}.jpg")
+        filepath = os.path.join("img/categories", filename)
+
+        with open(filepath, "wb") as f:
+            f.write(response.content)
+
+        return None
 
     def set_url(self, url):
         
         self.url = url
 
+    def uploadImagesToApi(self):
+        load_dotenv()
+        api_key = os.getenv("PRESTASHOP_API_KEY")
+
+        if not api_key:
+            raise ValueError("Missing PRESTASHOP_API_KEY in .env")
+
+        if self.imageUrl != None:
+                filename = os.path.basename(f"category_{self.imageId}.jpg")
+                filepath = os.path.join("./img/categories", filename)
+                if not os.path.exists(filepath):
+                    print(f"Skipping missing file: {filepath}")
+                    return None 
+                
+                print(f"Uploading {filename} to PrestaShop...")
+                upload_url = f"http://localhost:8080/api/images/categories/{self.id}"
+
+                with open(filepath, "rb") as f:
+                    upload_response = requests.post(
+                        upload_url,
+                        auth=(api_key, ""),
+                        files={"image": (filename, f, "image/jpeg")}
+                    )
+                if upload_response.status_code in (200, 201):
+                    print(f"Uploaded {filename} successfully!")
+                else:
+                    print(f"Failed to upload {filename}: {upload_response.status_code}")
+                    print(upload_response.text)
+            
+        return None
     def __repr__(self):
         return f"{self.id};1;{self.name};{2 if self.parent == None else self.parent.id};0;{self.description};{self.get_last_path_segment()};{self.get_last_path_segment()};{self.get_last_path_segment()};{self.get_last_path_segment()};{self.imageUrl};;{self.url};"
 
@@ -206,6 +274,7 @@ def load_categories_from_file(path: str) -> list[categories]:
             cat.url = url
             cat.description = description
             cat.imageUrl = image_url
+            cat.imageId = cat.id
             if parent_id == 2:
                 parent_id = None
             else:
@@ -255,7 +324,7 @@ def load_products_from_file(path: str) -> list[Product]:
                 product.price = float(row[6]) if row[6] else None
                 product.stock = int(float(row[7])) if row[7] else None
                 product.manufacturer = row[8].strip()
-
+                product.imageId = product.id
                 products.append(product)
 
             except Exception as e:
@@ -500,6 +569,7 @@ if __name__ == "__main__":
         load_dotenv()  
         for category in categories:
             categoriesUploader(category)
+            category.uploadImagesToApi()
         for product in products:
             productsUploader(product)
             product.uploadImagesToApi()
@@ -513,5 +583,13 @@ if __name__ == "__main__":
         productScraperLauncher(categories,0)
         createCsv("products", products)
 
+    if(arg1 == "images"):
+        categories = load_categories_from_file("./categories.csv")
+        products = load_products_from_file("./products.csv")
 
+        for category in categories:
+            category.downloadImage()
+
+        for product in products:
+            product.downloadImage()
     
