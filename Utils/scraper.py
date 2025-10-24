@@ -1,4 +1,5 @@
 import requests
+import random as rand
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from urllib.parse import urlparse
@@ -6,6 +7,7 @@ import sys
 from lxml import etree
 import os
 import csv
+from io import BytesIO
 BASE_URL = "https://flyhouse.pl/"
 
 from dotenv import load_dotenv
@@ -25,7 +27,7 @@ class Product:
         self.price = None
         self.stock = None
         self.manufacturer = None
-        
+        self.categoryObj = None
         
     def get_last_path_segment(self):
         parsed = urlparse(self.url)
@@ -35,7 +37,50 @@ class Product:
             return segments[-1]
         return None
 
-   
+    
+    def uploadImagesToApi(self):
+        load_dotenv()
+        api_key = os.getenv("PRESTASHOP_API_KEY")
+
+        if not api_key:
+            raise ValueError("Missing PRESTASHOP_API_KEY in .env")
+
+        image_urls = [url.strip() for url in self.imageUrls.split(",") if url.strip()]
+
+        for image_url in image_urls:
+            try:
+                print(f"️Downloading image: {image_url}")
+                response = requests.get(image_url, timeout=15)
+                response.raise_for_status()
+
+                if not response.headers.get("Content-Type", "").startswith("image/"):
+                    print(f"Skipping {image_url}: not an image")
+                    continue
+
+                # Extract a filename
+                filename = os.path.basename(image_url.split("?")[0]) or f"product_{self.id}.jpg"
+
+                print(f"Uploading {filename} to PrestaShop...")
+                upload_url = f"http://localhost:8080/api/images/products/{self.id}"
+
+                upload_response = requests.post(
+                    upload_url,
+                    auth=(api_key, ""),
+                    files={"image": (filename, BytesIO(response.content))}
+                )
+
+                if upload_response.status_code in (200, 201):
+                    print(f"Uploaded {filename} successfully!")
+                else:
+                    print(f"Failed to upload {filename}: {upload_response.status_code}")
+                    print(upload_response.text)
+
+            except requests.RequestException as e:
+                print(f"Error processing {image_url}: {e}")
+            
+            return None
+
+
     def __repr__(self):
         return (
             f"{self.id};"
@@ -124,39 +169,7 @@ def appendCsv(filename,Objects):
         for object_ in Objects:
            f.write(repr(object_) + "\n") 
 
-def scrapeFromProductPage(url,newProduct):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    #print(soup)
-    pricePoint = soup.find("div", class_="product-prices")
-    
-    newProduct.price = pricePoint.find("div", class_="current-price").find("span", itemprop="price").contents[0].replace("\xa0","").replace("zł","").replace(",",".")
 
-    allDescriptionP = soup.find("div", class_="product-description").find_all("p")
-    for description in allDescriptionP:
-        newProduct.description += description.string + " " if description.string != None else ""
-    newProduct.description = newProduct.description.replace(";","")
-    images = soup.find_all("img", class_="pro_gallery_item", limit=2)
-    for image in images:
-        newProduct.imageUrls += image["src"] + ","
-
-
-def scrapeProducts(url,categoryId):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    productListItems = soup.find_all("div","product_list_item")
-    newProducts = []
-    for productSoup in productListItems:
-        productLinkSoup =productSoup.find_next('a') 
-        newProduct = Product(productLinkSoup["title"].replace("'",""))
-        newProduct.category = categoryId
-        newProduct.url = productLinkSoup["href"] 
-        print(newProduct.name , newProduct.url )
-        scrapeFromProductPage(newProduct.url,newProduct)
-        products.append(newProduct)
-        newProducts.append(newProduct) 
-
-    appendCsv("products",newProducts)
 def productScraperLauncher(categories , limit):
     for category in categories:
         print(category.url)
@@ -230,6 +243,13 @@ def load_products_from_file(path: str) -> list[Product]:
                 )
                 product.id = int(row[0])
                 product.category = row[3].strip() if row[3] else None
+                print(product.category)
+                for category in categories:
+                    print(str(category.id) + " " + str(product.category))
+                    if str(category.id) == str(product.category):
+                        product.categoryObj = category
+                        break
+                print(product.categoryObj)
                 product.imageUrls = row[4].strip()
                 product.description = row[5].strip()
                 product.price = float(row[6]) if row[6] else None
@@ -246,13 +266,100 @@ def load_products_from_file(path: str) -> list[Product]:
 
     return products
 
+def scrapeFromProductPage(url, newProduct):
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
 
+        # Price
+        pricePoint = soup.find("div", class_="product-prices")
+        if not pricePoint:
+            raise ValueError("Price section not found")
+
+        price_tag = pricePoint.find("div", class_="current-price").find("span", itemprop="price")
+        if not price_tag or not price_tag.contents:
+            raise ValueError("Price not found")
+        
+        newProduct.price = (
+            price_tag.contents[0]
+            .replace("\xa0", "")
+            .replace("zł", "")
+            .replace(",", ".")
+            .strip()
+        )
+
+        # Description
+        description_div = soup.find("div", class_="product-description")
+        if description_div:
+            allDescriptionP = description_div.find_all("p")
+            for description in allDescriptionP:
+                if description.string:
+                    newProduct.description += description.string.strip() + " "
+            newProduct.description = newProduct.description.replace(";", "").strip()
+
+        # Images
+        images = soup.find_all("img", class_="pro_gallery_item", limit=2)
+        for image in images:
+            if "src" in image.attrs:
+                newProduct.imageUrls += image["src"] + ","
+
+        return True
+    except Exception as e:
+        print(f"Error scraping product page {url}: {e}")
+        return False
+
+
+def scrapeProducts(url, categoryId):
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        productListItems = soup.find_all("div", "product_list_item")
+        if not productListItems:
+            print(f"No products found on {url}")
+            return
+
+        newProducts = []
+        for productSoup in productListItems:
+            try:
+                productLinkSoup = productSoup.find_next("a")
+                if not productLinkSoup or "href" not in productLinkSoup.attrs:
+                    print("Skipping product: missing link")
+                    continue
+
+                newProduct = Product(productLinkSoup["title"].replace("'", ""))
+                newProduct.category = categoryId
+                newProduct.url = productLinkSoup["href"]
+
+                print(f"Scraping {newProduct.name} -> {newProduct.url}")
+
+                if scrapeFromProductPage(newProduct.url, newProduct):
+                    products.append(newProduct)
+                    newProducts.append(newProduct)
+                    
+            except Exception as inner_e:
+                print(f"Skipping product due to unexpected error: {inner_e}")
+                continue
+
+        if newProducts:
+            appendCsv("products", newProducts)
+            print(f"Saved {len(newProducts)} products to CSV")
+        else:
+            print("No products successfully scraped.")
+
+    except Exception as e:
+        print(f"Failed to load product list from {url}: {e}")
 
 def categoriesUploader(category):
     # Load .env file
 
     # Access environment variables
     api_key = os.getenv("PRESTASHOP_API_KEY")
+    if not api_key:
+        raise ValueError("PRESTASHOP_API_KEY or PRESTASHOP_URL not set in .env")
+
 
     prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
 
@@ -303,14 +410,83 @@ def categoriesUploader(category):
     headers = {"Content-Type": "application/xml", "Accept": "application/xml"}
     response = requests.post("http://localhost:8080/api/categories", auth=(api_key, ""), headers=headers, data=xml_data)
 
-    # Check result
     if response.status_code in (200, 201):
-        print("✅ Category created successfully!")
+        print("✅ Category "+ category.name +"created successfully!")
         category.id = response.text[response.text.find("<id>") + 13 :  response.text.find("</id>")-3 ]
+        print(category.id)
     else:
         print(f"❌ Failed to create category. Status code: {response.status_code}")
         print(response.text)
 
+def productsUploader(product: Product):
+    load_dotenv()
+    api_key = os.getenv("PRESTASHOP_API_KEY")
+
+    if not api_key:
+        raise ValueError("PRESTASHOP_API_KEY or PRESTASHOP_URL not set in .env")
+
+    prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
+    product_el = etree.SubElement(prestashop, "product")
+
+    simple_fields = {
+        "id_category_default": product.category,
+        "price": product.price,
+        "active": 1,
+        "id_shop_default": 1,
+        "on_sale": 1,
+        "show_price":1,
+        "state":1,
+        "product_type":"standard",
+        "type":1,
+
+        
+    }
+
+    for tag, value in simple_fields.items():
+        el = etree.SubElement(product_el, tag)
+        el.text = etree.CDATA(str(value))
+
+  
+    multilang_fields = {
+        "name": {"1": product.name},
+        "description": {"1": product.description},
+    }
+
+    for field_name, lang_map in multilang_fields.items():
+        field_el = etree.SubElement(product_el, field_name)
+        for lang_id, text_val in lang_map.items():
+            lang_el = etree.SubElement(field_el, "language", id=str(lang_id))
+            lang_el.text = etree.CDATA(text_val)
+
+    associations = etree.SubElement(product_el, "associations")
+    cats_el = etree.SubElement(associations, "categories")
+    cat_el = etree.SubElement(cats_el, "category")
+    cat_id_el = etree.SubElement(cat_el, "id")
+    print(product.categoryObj)
+    cat_id_el.text = etree.CDATA(product.categoryObj.id)
+
+    associations = etree.SubElement(product_el, "associations")
+    cats_el = etree.SubElement(associations, "images")
+    cat_el = etree.SubElement(cats_el, "image")
+    cat_id_el = etree.SubElement(cat_el, "id")
+    cat_id_el.text = etree.CDATA(product.imageUrls)
+    xml_data = etree.tostring(prestashop, encoding="utf-8", xml_declaration=True, pretty_print=True)
+
+    headers = {"Content-Type": "application/xml", "Accept": "application/xml"}
+    response = requests.post("http://localhost:8080/api/products", auth=(api_key, ""), headers=headers, data=xml_data)
+
+    if response.status_code in (200, 201):
+        print(f"✅ Product '{product.name}' created successfully!")
+        tree = etree.fromstring(response.content)
+        new_id = tree.findtext(".//id")
+        if new_id:
+            product.id = int(new_id)
+            print(f" New Product ID: {product.id}")
+        else:
+            print(" Warning: Created but cannot parse new ID.")
+    else:
+        print(f"❌ Failed to create product '{product.name}'. Status code: {response.status_code}")
+        print(response.text)
 
 if __name__ == "__main__":
 
@@ -324,6 +500,9 @@ if __name__ == "__main__":
         load_dotenv()  
         for category in categories:
             categoriesUploader(category)
+        for product in products:
+            productsUploader(product)
+            product.uploadImagesToApi()
 
     if(arg1 == "categories"):
         categoriess = scrapeMainCategories(BASE_URL)
