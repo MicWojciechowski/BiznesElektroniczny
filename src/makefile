@@ -8,5 +8,5 @@ down:
 
 perm:
 	@echo "Tuning the permissions..."
-	sudo chown -R 33:33 ./prestashop/var
-	sudo chmod -R +755 ./prestashop/var
+	sudo chown -R 33:33 ./prestashop
+	sudo chmod -R +755 ./prestashop

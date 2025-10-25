@@ -7,6 +7,7 @@ services:
       - db
     ports:
       - "8080:80"
+      - "8443:443"
     environment:
       - PS_DEV_MODE=1
       - DB_SERVER=db
@@ -17,8 +18,11 @@ services:
       - PS_COUNTRY=US
       - PS_FOLDER_ADMIN=admin
       - PS_FOLDER_INSTALL=install
+    command: /bin/bash -c "a2enmod ssl && apache2-foreground"
     volumes:
       - ./prestashop:/var/www/html
+      - ./apache-conf/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./apache-conf/ssl:/etc/ssl/certs
     restart: unless-stopped
 
   db:
