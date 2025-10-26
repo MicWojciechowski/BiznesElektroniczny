@@ -8,3 +8,7 @@ the possible commands are as follows:
     - images     ( downloads the images from parsing results to your machine)
     - upload     (  uploads data and images from categories and products to the store using the
                     webAPI)
+
+remember to create the .env file with 
+PRESTASHOP_API_KEY=
+PRESTASHOP_URL=

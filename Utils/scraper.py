@@ -8,7 +8,8 @@ from lxml import etree
 import os
 import csv
 from io import BytesIO
-BASE_URL = "https://flyhouse.pl/"
+
+
 
 from dotenv import load_dotenv
 
@@ -63,9 +64,9 @@ class Product:
     def uploadImagesToApi(self):
         load_dotenv()
         api_key = os.getenv("PRESTASHOP_API_KEY")
-
-        if not api_key:
-            raise ValueError("Missing PRESTASHOP_API_KEY in .env")
+        base_URL = os.getenv("PRESTASHOP_URL")
+        if not api_key or not base_URL:
+            raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
 
         image_urls = [url.strip() for url in self.imageUrls.split(",") if url.strip()]
         iterator = 0
@@ -79,13 +80,14 @@ class Product:
                     continue
                 
                 print(f"Uploading {filename} to PrestaShop...")
-                upload_url = f"http://localhost:8080/api/images/products/{self.id}"
+                upload_url = f"{base_URL}/api/images/products/{self.id}"
 
                 with open(filepath, "rb") as f:
                     upload_response = requests.post(
                         upload_url,
                         auth=(api_key, ""),
-                        files={"image": (filename, f, "image/jpeg")}
+                        files={"image": (filename, f, "image/jpeg")},
+                        verify=False
                     )
                 if upload_response.status_code in (200, 201):
                     print(f"Uploaded {filename} successfully!")
@@ -163,9 +165,9 @@ class Category:
     def uploadImagesToApi(self):
         load_dotenv()
         api_key = os.getenv("PRESTASHOP_API_KEY")
-
-        if not api_key:
-            raise ValueError("Missing PRESTASHOP_API_KEY in .env")
+        base_URL = os.getenv("PRESTASHOP_URL")
+        if not api_key or not base_URL:
+            raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
 
         if self.imageUrl != None:
                 filename = os.path.basename(f"category_{self.imageId}.jpg")
@@ -175,13 +177,14 @@ class Category:
                     return None 
                 
                 print(f"Uploading {filename} to PrestaShop...")
-                upload_url = f"http://localhost:8080/api/images/categories/{self.id}"
+                upload_url = f"{base_URL}/api/images/categories/{self.id}"
 
                 with open(filepath, "rb") as f:
                     upload_response = requests.post(
                         upload_url,
                         auth=(api_key, ""),
-                        files={"image": (filename, f, "image/jpeg")}
+                        files={"image": (filename, f, "image/jpeg")},
+                        verify=False
                     )
                 if upload_response.status_code in (200, 201):
                     print(f"Uploaded {filename} successfully!")
@@ -312,13 +315,10 @@ def load_products_from_file(path: str) -> list[Product]:
                 )
                 product.id = int(row[0])
                 product.category = row[3].strip() if row[3] else None
-                print(product.category)
                 for category in categories:
-                    print(str(category.id) + " " + str(product.category))
                     if str(category.id) == str(product.category):
                         product.categoryObj = category
                         break
-                print(product.categoryObj)
                 product.imageUrls = row[4].strip()
                 product.description = row[5].strip()
                 product.price = float(row[6]) if row[6] else None
