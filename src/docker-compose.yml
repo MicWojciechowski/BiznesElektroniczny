@@ -36,5 +36,5 @@ services:
       - MYSQL_DATABASE=prestashop
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql  # impor
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: unless-stopped
