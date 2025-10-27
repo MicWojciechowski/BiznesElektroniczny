@@ -1,10 +1,12 @@
 up: perm
 	@echo "Turning docker network up..."
 	@docker compose up -d
+	sleep 3s
+	@make perm
 
 down:
 	@echo "Turning docker network down..."
-	@docker compose down
+	@docker compose down -v
 
 perm:
 	@echo "Tuning the permissions..."
