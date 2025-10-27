@@ -423,11 +423,13 @@ def scrapeProducts(url, categoryId):
 
 def categoriesUploader(category):
     # Load .env file
-
+    load_dotenv()
     # Access environment variables
     api_key = os.getenv("PRESTASHOP_API_KEY")
-    if not api_key:
-        raise ValueError("PRESTASHOP_API_KEY or PRESTASHOP_URL not set in .env")
+    base_URL = os.getenv("PRESTASHOP_URL")
+    if not api_key or not base_URL:
+        raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
+
 
 
     prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
@@ -477,7 +479,7 @@ def categoriesUploader(category):
     xml_data = etree.tostring(prestashop, encoding="utf-8", xml_declaration=True, pretty_print=True)
 
     headers = {"Content-Type": "application/xml", "Accept": "application/xml"}
-    response = requests.post("http://localhost:8080/api/categories", auth=(api_key, ""), headers=headers, data=xml_data)
+    response = requests.post(f"{base_URL}/api/categories", auth=(api_key, ""), headers=headers, data=xml_data, verify=False)
 
     if response.status_code in (200, 201):
         print("✅ Category "+ category.name +"created successfully!")
@@ -487,12 +489,77 @@ def categoriesUploader(category):
         print(f"❌ Failed to create category. Status code: {response.status_code}")
         print(response.text)
 
-def productsUploader(product: Product):
+def update_stock_quantity(product_id: int, new_quantity: int):
+
     load_dotenv()
     api_key = os.getenv("PRESTASHOP_API_KEY")
+    base_URL = os.getenv("PRESTASHOP_URL")
+    if not api_key or not base_URL:
+        raise ValueError("Missing PRESTASHOP_API_KEY in .env")
+    headers = {"Accept": "application/xml", "Content-Type": "application/xml"}
+    params = {
+        "filter[id_product]": f"[{product_id}]",
+        "display": "full"
+    }
+    response = requests.get(f"{base_URL}/api/stock_availables", auth=(api_key, ""), headers=headers, params=params, verify=False)
 
-    if not api_key:
-        raise ValueError("PRESTASHOP_API_KEY or PRESTASHOP_URL not set in .env")
+    if response.status_code != 200:
+        print(f"Failed to fetch stock_available for product {product_id}: {response.status_code}")
+        print(response.text)
+        return False
+
+    root = etree.fromstring(response.content)
+    stock_ids = root.xpath("//stock_available/id/text()")
+    if not stock_ids:
+        print(f"No stock_available record found for product {product_id}")
+        return False
+
+    stock_id = stock_ids[0]
+    print(f"Found stock_available ID: {stock_id}")
+
+    prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
+    stock_available = etree.SubElement(prestashop, "stock_available")
+
+    el_id = etree.SubElement(stock_available, "id")
+    el_id.text = etree.CDATA(str(stock_id))
+
+    el_qty = etree.SubElement(stock_available, "quantity")
+    el_qty.text = etree.CDATA(str(new_quantity))
+    
+    el_pr = etree.SubElement(stock_available, "id_product")
+    el_pr.text = etree.CDATA(str(product_id))
+    el_pr = etree.SubElement(stock_available, "id_shop")
+    el_pr.text = etree.CDATA(str(1))
+
+    el_pr = etree.SubElement(stock_available, "id_product_attribute")
+    el_pr.text = etree.CDATA(str(0))
+
+    el_pr = etree.SubElement(stock_available, "depends_on_stock")
+    el_pr.text = etree.CDATA(str(0))
+
+
+    el_pr = etree.SubElement(stock_available, "out_of_stock")
+    el_pr.text = etree.CDATA(str(2))
+    
+    xml_payload = etree.tostring(prestashop, encoding="utf-8", xml_declaration=True, pretty_print=True)
+
+    patch_url = f"{base_URL}/api/stock_availables/{stock_id}"
+    patch_response = requests.put(patch_url, auth=(api_key, ""), headers=headers, data=xml_payload, verify=False)
+
+    if patch_response.status_code in (200, 201):
+        print(f"Updated stock for product {product_id} to {new_quantity}")
+        return True
+    else:
+        print(f"Failed to update stock: {patch_response.status_code}")
+        print(patch_response.text)
+        return False
+
+def productsUploader(product: Product):
+    load_dotenv()
+    base_URL = os.getenv("PRESTASHOP_URL")
+    api_key = os.getenv("PRESTASHOP_API_KEY")
+    if not api_key or not base_URL:
+        raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
 
     prestashop = etree.Element("prestashop", nsmap={"xlink": "http://www.w3.org/1999/xlink"})
     product_el = etree.SubElement(prestashop, "product")
@@ -507,6 +574,7 @@ def productsUploader(product: Product):
         "state":1,
         "product_type":"standard",
         "type":1,
+        "advanced_stock_management":1,
 
         
     }
@@ -542,10 +610,11 @@ def productsUploader(product: Product):
     xml_data = etree.tostring(prestashop, encoding="utf-8", xml_declaration=True, pretty_print=True)
 
     headers = {"Content-Type": "application/xml", "Accept": "application/xml"}
-    response = requests.post("http://localhost:8080/api/products", auth=(api_key, ""), headers=headers, data=xml_data)
+    response = requests.post(f"{base_URL}/api/products", auth=(api_key, ""), headers=headers, data=xml_data, verify=False)
 
     if response.status_code in (200, 201):
         print(f"✅ Product '{product.name}' created successfully!")
+        print(response.text)
         tree = etree.fromstring(response.content)
         new_id = tree.findtext(".//id")
         if new_id:
@@ -556,6 +625,78 @@ def productsUploader(product: Product):
     else:
         print(f"❌ Failed to create product '{product.name}'. Status code: {response.status_code}")
         print(response.text)
+    update_stock_quantity(product.id,8)
+
+def delete_all_categories():
+    load_dotenv()
+    api_key = os.getenv("PRESTASHOP_API_KEY")
+    base_URL = os.getenv("PRESTASHOP_URL")
+    if not api_key:
+        raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
+
+    print("Fetching product list...")
+    response = requests.get(f"{base_URL}/api/categories", auth=(api_key, ""), headers={"Accept": "application/xml"},verify=False)
+
+    if response.status_code != 200:
+        print(f"Failed to fetch categoreis: {response.status_code}")
+        return
+    print(response.text)
+    tree = etree.fromstring(response.content)
+ 
+    category_id = tree.xpath("//category/@id")
+    if not category_id:
+        print("No categories found to delete.")
+        return
+
+    print(f"Found {len(category_id)} categories. Starting deletion...")
+
+    for pid in category_id:
+        if pid == "2" or pid == "1" : continue
+        else:
+            delete_url = f"{base_URL}/api/categories/{pid}"
+            del_response = requests.delete(delete_url, auth=(api_key, ""),verify=False)
+            if del_response.status_code in (200, 204):
+                print(f"Deleted category ID {pid}")
+            else:
+                print(f"Failed to delete category ID {pid}: {del_response.status_code}")
+                print(del_response.text)
+
+
+
+def delete_all_products():
+    load_dotenv()
+    api_key = os.getenv("PRESTASHOP_API_KEY")
+    base_URL = os.getenv("PRESTASHOP_URL")
+    if not api_key:
+        raise ValueError("Missing PRESTASHOP_API_KEY or PRESTASHOP_URL in .env")
+
+    print("Fetching product list...")
+    response = requests.get(f"{base_URL}/api/products", auth=(api_key, ""), headers={"Accept": "application/xml"},verify=False)
+
+    if response.status_code != 200:
+        print(f"Failed to fetch products: {response.status_code}")
+        return
+
+    tree = etree.fromstring(response.content)
+ 
+    product_ids = tree.xpath("//product/@id")
+    if not product_ids:
+        print("No products found to delete.")
+        return
+
+    print(f"Found {len(product_ids)} products. Starting deletion...")
+
+    for pid in product_ids:
+        delete_url = f"{base_URL}/api/products/{pid}"
+        del_response = requests.delete(delete_url, auth=(api_key, ""),verify=False)
+
+        if del_response.status_code in (200, 204):
+            print(f"Deleted product ID {pid}")
+        else:
+            print(f"Failed to delete product ID {pid}: {del_response.status_code}")
+            print(del_response.text)
+
+
 
 if __name__ == "__main__":
 
@@ -564,6 +705,8 @@ if __name__ == "__main__":
         arg1 = sys.argv[1]
     
     if(arg1 == "upload"):
+        delete_all_categories()
+        delete_all_products()
         categories = load_categories_from_file("./categories.csv")
         products = load_products_from_file("./products.csv")
         load_dotenv()  
