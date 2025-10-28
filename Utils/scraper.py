@@ -346,19 +346,19 @@ def scrapeFromProductPage(url, newProduct):
         if not pricePoint:
             raise ValueError("Price section not found")
 
-        price_tag = pricePoint.find("div", class_="current-price").find("span", itemprop="price")
-        if not price_tag or not price_tag.contents:
-            raise ValueError("Price not found")
-        
+        netto_tag = pricePoint.find("p", class_="price_netto")
+        if not netto_tag or not netto_tag.contents:
+            raise ValueError("Netto price not found")
+
+        price_text = netto_tag.get_text().split("Netto")[0]
         newProduct.price = (
-            price_tag.contents[0]
+            price_text
             .replace("\xa0", "")
             .replace("zł", "")
             .replace(",", ".")
             .strip()
         )
 
-        # Description
         description_div = soup.find("div", class_="product-description")
         if description_div:
             allDescriptionP = description_div.find_all("p")
