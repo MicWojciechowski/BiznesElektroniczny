@@ -1,14 +1,32 @@
-to run scraper use python3 ./scraper {command}
+# How to Run the Scraper
 
-the possible commands are as follows:
-    - categories ( to scrape categories, it creates the categories.csv )
-    - products   ( to scrape products, it creates the products.csv file 
-                   it is dependent on the categories.csv file to know in which
-                   categories to scrape)
-    - images     ( downloads the images from parsing results to your machine)
-    - upload     (  uploads data and images from categories and products to the store using the
-                    webAPI)
+To run the scraper, use:
 
-remember to create the .env file with 
+```bash
+python3 ./scraper {command}
+```
+
+### Available Commands
+
+| Command | Description |
+|----------|-------------|
+| **categories** | Scrapes product categories and creates a `categories.csv` file. |
+| **products** | Scrapes product data and creates a `products.csv` file.<br>⚠️ Depends on `categories.csv` to determine which categories to scrape. |
+| **images** | Downloads product images from the parsed results to your machine. |
+| **upload** | Uploads data and images from `categories.csv` and `products.csv` to the store using the PrestaShop WebAPI. |
+
+---
+
+### Environment Configuration
+
+Before running any commands, create a `.env` file in the project root with the following content:
+
+```bash
 PRESTASHOP_API_KEY=
 PRESTASHOP_URL=
+```
+### Tax policy:
+After uploading products, you can automate setting tax policy by running 
+```bash
+make tax
+```

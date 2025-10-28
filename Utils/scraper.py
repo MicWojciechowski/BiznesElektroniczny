@@ -569,7 +569,7 @@ def productsUploader(product: Product):
         "price": product.price,
         "active": 1,
         "id_shop_default": 1,
-        "on_sale": 1,
+        "available_for_order": 1,
         "show_price":1,
         "state":1,
         "product_type":"standard",
