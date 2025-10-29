@@ -445,9 +445,14 @@ def categoriesUploader(category):
         "is_root_category": 0,
     }
 
+    link_rewrite_segment = category.get_last_path_segment()
+    if not link_rewrite_segment:
+        link_rewrite_segment = category.name.lower().replace(" ", "-").replace("'", "")
+    link_rewrite_clean = link_rewrite_segment.lower().replace(" ", "-").replace("'", "")
+
     multilang_values = {
         "name": { "1": category.name },
-         "link_rewrite": { "1": "wedki-muchowe" },
+         "link_rewrite": { "1": link_rewrite_clean },
         "description": { "1": category.description},
         "meta_title": { "1": category.name},
         # "meta_description": { "1": },
