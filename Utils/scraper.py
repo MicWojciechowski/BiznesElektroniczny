@@ -98,8 +98,6 @@ class Product:
             except requests.RequestException as e:
                 print(f"Error processing {image_url}: {e}")
             
-            return None
-
 
     def __repr__(self):
         return (
