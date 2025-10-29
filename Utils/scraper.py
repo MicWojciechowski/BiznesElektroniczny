@@ -346,19 +346,19 @@ def scrapeFromProductPage(url, newProduct):
         if not pricePoint:
             raise ValueError("Price section not found")
 
-        price_tag = pricePoint.find("div", class_="current-price").find("span", itemprop="price")
-        if not price_tag or not price_tag.contents:
-            raise ValueError("Price not found")
-        
+        netto_tag = pricePoint.find("p", class_="price_netto")
+        if not netto_tag or not netto_tag.contents:
+            raise ValueError("Netto price not found")
+
+        price_text = netto_tag.get_text().split("Netto")[0]
         newProduct.price = (
-            price_tag.contents[0]
+            price_text
             .replace("\xa0", "")
             .replace("zł", "")
             .replace(",", ".")
             .strip()
         )
 
-        # Description
         description_div = soup.find("div", class_="product-description")
         if description_div:
             allDescriptionP = description_div.find_all("p")
@@ -445,9 +445,14 @@ def categoriesUploader(category):
         "is_root_category": 0,
     }
 
+    link_rewrite_segment = category.get_last_path_segment()
+    if not link_rewrite_segment:
+        link_rewrite_segment = category.name.lower().replace(" ", "-").replace("'", "")
+    link_rewrite_clean = link_rewrite_segment.lower().replace(" ", "-").replace("'", "")
+
     multilang_values = {
         "name": { "1": category.name },
-         "link_rewrite": { "1": "wedki-muchowe" },
+         "link_rewrite": { "1": link_rewrite_clean },
         "description": { "1": category.description},
         "meta_title": { "1": category.name},
         # "meta_description": { "1": },
@@ -569,7 +574,7 @@ def productsUploader(product: Product):
         "price": product.price,
         "active": 1,
         "id_shop_default": 1,
-        "on_sale": 1,
+        "available_for_order": 1,
         "show_price":1,
         "state":1,
         "product_type":"standard",
