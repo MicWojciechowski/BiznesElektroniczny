@@ -1,7 +1,7 @@
 # BiznesElektroniczny
 
 ## General information
-This project is an assignment for Electronic Business course at Gdansk University of Technology. The task is to make a duplicate of chosen website. The website we chose is flyhouse.pl.
+This project is an assignment for Electronic Business course at Gdansk University of Technology. The task is to make a duplicate of chosen website. The website we chose is https://flyhouse.pl.
 
 ## Tech stack
 Technologies used during the project:
