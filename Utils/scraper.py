@@ -98,8 +98,6 @@ class Product:
             except requests.RequestException as e:
                 print(f"Error processing {image_url}: {e}")
             
-            return None
-
 
     def __repr__(self):
         return (
@@ -222,6 +220,8 @@ def scrapeMainCategories(url):
     for categorySoup in categoriesLi:
     
         newCategory = Category(categorySoup.find_next('a')["title"].replace("'",""))
+        if newCategory.name == "Wyprzedaże":
+            continue
         print(newCategory.name)
         newCategory.set_url(categorySoup.find_next('a')["href"])
         categories.append(newCategory)
@@ -570,7 +570,7 @@ def productsUploader(product: Product):
     product_el = etree.SubElement(prestashop, "product")
 
     simple_fields = {
-        "id_category_default": product.category,
+        "id_category_default": product.categoryObj.id,
         "price": product.price,
         "active": 1,
         "id_shop_default": 1,
