@@ -220,6 +220,8 @@ def scrapeMainCategories(url):
     for categorySoup in categoriesLi:
     
         newCategory = Category(categorySoup.find_next('a')["title"].replace("'",""))
+        if newCategory.name == "Wyprzedaże":
+            continue
         print(newCategory.name)
         newCategory.set_url(categorySoup.find_next('a')["href"])
         categories.append(newCategory)
