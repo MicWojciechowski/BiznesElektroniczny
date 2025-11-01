@@ -570,7 +570,7 @@ def productsUploader(product: Product):
     product_el = etree.SubElement(prestashop, "product")
 
     simple_fields = {
-        "id_category_default": product.category,
+        "id_category_default": product.categoryObj.id,
         "price": product.price,
         "active": 1,
         "id_shop_default": 1,
