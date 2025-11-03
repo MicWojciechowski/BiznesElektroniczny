@@ -1,4 +1,5 @@
 /Utils/.env
+/Utils/.venv
 mysql/
 prestashop/app/config/parameters.php
 prestashop/config/defines_custom.inc.php
