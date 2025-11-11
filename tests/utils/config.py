@@ -1,1 +1,26 @@
 URL = "https://localhost:8443"
+
+
+CART_OPEN="blockcart.cart-preview.active"
+CART_CLOSE=""
+CART_PQ=""
+CART_SUBMIT=""
+
+ADD_TO_CART=""
+DELETE_FROM_CART=""
+
+
+SEARCH=""
+
+
+REGISTER_OPEN=""
+REGISTER_NAME=""
+REGISTER_SURNAME=""
+REGISTER_SUBMIT=""
+
+
+PAYMENT_OPTION=""
+DELIVERY=""
+ORDER=""
+
+RECEIPT=""
