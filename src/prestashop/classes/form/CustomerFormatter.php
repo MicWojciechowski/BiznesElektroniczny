@@ -90,7 +90,7 @@ class CustomerFormatterCore implements FormFormatterInterface
     public function getFormat()
     {
         $format = [];
-
+	/*
         $genders = Gender::getGenders($this->language->id);
         if ($genders->count() > 0) {
             $genderField = (new FormField())
@@ -108,7 +108,7 @@ class CustomerFormatterCore implements FormFormatterInterface
             }
             $format[$genderField->getName()] = $genderField;
         }
-
+	*/
         $format['firstname'] = (new FormField())
             ->setName('firstname')
             ->setLabel(
