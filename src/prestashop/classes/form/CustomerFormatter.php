@@ -30,7 +30,7 @@ class CustomerFormatterCore implements FormFormatterInterface
     private $translator;
     private $language;
 
-    private $ask_for_birthdate = true;
+    private $ask_for_birthdate = false;
     private $ask_for_partner_optin = true;
     private $partner_optin_is_required = true;
     private $ask_for_password = true;
@@ -109,6 +109,7 @@ class CustomerFormatterCore implements FormFormatterInterface
             $format[$genderField->getName()] = $genderField;
         }
 	*/
+
         $format['firstname'] = (new FormField())
             ->setName('firstname')
             ->setLabel(
@@ -230,7 +231,13 @@ class CustomerFormatterCore implements FormFormatterInterface
                 ->setRequired($this->partner_optin_is_required);
         }
 
-        // ToDo, replace the hook exec with HookFinder when the associated PR will be merged
+	//custom filed to match og website 
+	$format['custom-field'] = (new FormField()) 
+	    ->setName('custom-newsletter') 
+	    ->setType('checkbox') 
+	    ->setLabel('Zapisz się do newslettera') 
+	    ->addAvailableValue('comment','Możesz w każdej chwili zrezygnować z subskrypcji. W tym celu zapoznaj się z naszymi danymi kontaktowymi regulaminie sklepu.');
+
         $additionalCustomerFormFields = Hook::exec('additionalCustomerFormFields', ['fields' => &$format], null, true);
 
         if (is_array($additionalCustomerFormFields)) {
