@@ -118,11 +118,11 @@ class CustomerFormatterCore implements FormFormatterInterface
                     'Shop.Forms.Labels'
                 )
             )
-            ->setRequired(true)
+            ->setRequired(true);/*
             ->addAvailableValue(
                 'comment',
                 $this->translator->trans('Only letters and the dot (.) character, followed by a space, are allowed.', [], 'Shop.Forms.Help')
-            );
+            );*/
 
         $format['lastname'] = (new FormField())
             ->setName('lastname')
@@ -133,11 +133,11 @@ class CustomerFormatterCore implements FormFormatterInterface
                     'Shop.Forms.Labels'
                 )
             )
-            ->setRequired(true)
+            ->setRequired(true);/*
             ->addAvailableValue(
                 'comment',
                 $this->translator->trans('Only letters and the dot (.) character, followed by a space, are allowed.', [], 'Shop.Forms.Help')
-            );
+            );*/
 
         if (Configuration::get('PS_B2B_ENABLE')) {
             $format['company'] = (new FormField())
