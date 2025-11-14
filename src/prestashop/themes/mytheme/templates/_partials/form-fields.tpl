@@ -94,7 +94,13 @@
               <input name="{$field.name}" type="checkbox" value="1" {if $field.value}checked="checked"{/if} {if $field.required}required{/if}>
               <span><i class="material-icons rtl-no-flip checkbox-checked">&#xE5CA;</i></span>
               {$field.label nofilter}
-            </label>
+              {if isset($field.availableValues.comment)}
+	      <br>
+	      <em>
+		{$field.availableValues.comment}
+	      </em>
+	      {/if}
+	    </label>
           </span>
         {/block}
 
