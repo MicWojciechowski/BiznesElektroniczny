@@ -78,6 +78,7 @@
 
 {block name='stylesheets'}
   {include file="_partials/stylesheets.tpl" stylesheets=$stylesheets}
+  <link rel="stylesheet" href="https://flyhouse.pl/themes/epresta/assets/cache/theme-67137f983.css" media="all">
 {/block}
 
 {block name='javascript_head'}
