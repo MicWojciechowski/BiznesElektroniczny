@@ -45,9 +45,11 @@
       <div class="col-md-12">
         <p class="text-sm-center">
           {block name='copyright_link'}
-            <a href="https://www.prestashop.com" target="_blank" rel="noopener noreferrer nofollow">
-              {l s='%copyright% %year% - Ecommerce software by %prestashop%' sprintf=['%prestashop%' => 'PrestaShop™', '%year%' => 'Y'|date, '%copyright%' => '©'] d='Shop.Theme.Global'}
-            </a>
+		<div class="d-flex justify-content-between p-2 border">
+		  <div class="text-decoration-none">© 2025 <span><a href="/">www.flyhouse.pl</a> | Wszystkie prawa zastrzeżone</span></div>
+		  <div class="text-decoration-none"><span><a href="https://prestaguru.pl" target="_blank"> PrestaShop pomoc </a> 
+| <a href="https://helpguru.eu/optymalizacja-dla-wyszukiwarek-seo" target="_blank">Pozycjonowanie SEO</a></span></div>
+		</div>
           {/block}
         </p>
       </div>
