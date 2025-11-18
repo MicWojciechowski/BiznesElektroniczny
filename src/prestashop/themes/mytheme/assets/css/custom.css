@@ -1,0 +1,114 @@
+/* Center the search bar vertically and horizontally */
+.col-md-6.text-center [id*="search"],
+.col-md-6.text-center .search-widget,
+.col-md-6.text-center form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-top{
+  background-color:#f3f3ef !important;
+}
+
+
+
+.col-md-6.col-sm-12 {
+  display: flex;
+  justify-content: center;
+}
+
+#search_widget {
+  max-width: 300px;        /* keep your custom width */
+  width: 100%;             /* no !important */
+  margin-left: -20px;      /* safe horizontal shift */
+}
+
+/* Wrapper for the right column */
+.col-md-4.text-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px; /* space between items */
+}
+
+/* Each element inside displayNav2 shown vertically (logo on top, text under) */
+.col-md-4.text-right > * {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Make icons bigger */
+.col-md-4.text-right i,
+.col-md-4.text-right svg,
+.col-md-4.text-right img {
+  font-size: 28px; /* for icon fonts */
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+}
+
+.col-md-4.text-right > * span,
+.col-md-4.text-right > * .title,
+.col-md-4.text-right > * .label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.js-top-menu.position-static.hidden-sm-down {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;   /* centers the menu horizontally */
+  align-items: center;       /* centers items vertically */
+}
+
+
+/* 1. Turn whole menu container into flexbox */
+#_desktop_top_menu {
+    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    background-color: #d7d2c2;
+}
+
+/* 2. Remove Bootstrap floats from li elements */
+#_desktop_top_menu .top-menu > li {
+    float: none !important;
+}
+
+/* 3. Also remove floats from deeper items just in case */
+#_desktop_top_menu .top-menu li {
+    float: none !important;
+}
+
+/* 4. Turn UL into flex to align items horizontally */
+#_desktop_top_menu .top-menu {
+    display: flex !important;
+    justify-content: center;
+    gap: 20px; /* optional spacing between menu items */
+}
+
+.footer-container {
+    background-color: #d7d2c2;
+}
+
+.footer-bottom {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff !important;
+}
+
+#search_widget input[type="text"],
+#search_widget input[type="search"] {
+    border-radius: 25px !important; /* adjust as needed */
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
