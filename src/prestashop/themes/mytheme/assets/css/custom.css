@@ -7,6 +7,12 @@
   align-items: center;
 }
 
+.header-top{
+  background-color:#f3f3ef !important;
+}
+
+
+
 .col-md-6.col-sm-12 {
   display: flex;
   justify-content: center;
@@ -66,6 +72,7 @@
     display: flex !important;
     justify-content: center !important;
     align-items: center;
+    background-color: #d7d2c2;
 }
 
 /* 2. Remove Bootstrap floats from li elements */
@@ -84,3 +91,24 @@
     justify-content: center;
     gap: 20px; /* optional spacing between menu items */
 }
+
+.footer-container {
+    background-color: #d7d2c2;
+}
+
+.footer-bottom {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff !important;
+}
+
+#search_widget input[type="text"],
+#search_widget input[type="search"] {
+    border-radius: 25px !important; /* adjust as needed */
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
