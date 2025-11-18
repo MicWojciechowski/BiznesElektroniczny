@@ -27,6 +27,11 @@
   {strip}
     {if $nodes|count}
       <ul class="category-sub-menu">
+        <style>
+        .category-sub-menu {
+          width: 20%
+        }
+        </style>
         {foreach from=$nodes item=node}
           <li data-depth="{$depth}">
             {if $depth===0}

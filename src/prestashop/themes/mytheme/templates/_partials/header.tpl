@@ -34,7 +34,7 @@
       <div class="row">
         <div class="hidden-sm-down">
           <div class="col-md-5 col-xs-12">
-            {hook h='displayNav1'}
+              {hook h='displayNav1'}
           </div>
         </div>
         <div class="hidden-md-up text-sm-center mobile">
