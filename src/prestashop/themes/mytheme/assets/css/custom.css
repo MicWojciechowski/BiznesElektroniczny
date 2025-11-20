@@ -139,6 +139,30 @@
     display: none;
 }
 
-.block-social ul li {
+.header-top .block-social ul li {
   background-color: #f3f3ef !important;
+}
+.footer-container .block-social {
+    position:relative;
+    min-height: 60px;
+}
+
+.footer-container .block-social ul {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* 3. Layout styles to make the list look right */
+    display: flex;       /* Makes the LIs sit side-by-side */
+    padding: 0;          /* Removes default browser padding */
+    margin: 0;           /* Removes default browser margin */
+    list-style: none;    /* Removes bullet points */
+}
+
+.footer-container .block-social ul li {
+  background-color: #d5d2c4 !important;
+}
+
+#js-product-list-header {
+  display: none !important;
 }
