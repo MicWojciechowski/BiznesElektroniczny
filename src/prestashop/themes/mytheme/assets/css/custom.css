@@ -138,3 +138,7 @@
 .top-menu li:last-child a:after {
     display: none;
 }
+
+.block-social ul li {
+  background-color: #f3f3ef !important;
+}
