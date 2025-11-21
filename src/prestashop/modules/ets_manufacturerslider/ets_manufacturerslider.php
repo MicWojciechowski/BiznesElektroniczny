@@ -507,8 +507,6 @@ $this->refs = 'https://prestahero.com/';
      }
      protected function _prepareHook()
      {        
-        if(Configuration::get('YBC_MF_MANUFACTURERS'))
-            return;
         switch(Configuration::get('YBC_MF_MANUFACTURER_ORDER'))
         {
             case 'name_desc':
@@ -550,8 +548,7 @@ $this->refs = 'https://prestahero.com/';
      }
      public function hookEtsManufacturer()
      {
-        if(Configuration::get('YBC_MF_MANUFACTURER_HOOK')=='custom_hook')
-            return $this->_prepareHook();
+        return $this->_prepareHook();
      }
      public function hookDisplayBackOfficeHeader()
     {
@@ -565,21 +562,16 @@ $this->refs = 'https://prestahero.com/';
     }
      public function hookDisplayHome()
      {
-        if(Configuration::get('YBC_MF_MANUFACTURER_HOOK')=='default')
-            return $this->_prepareHook();
+        return $this->_prepareHook();
      }
      public function hookDisplayHeader()
      {
-        if(Configuration::get('YBC_MF_MANUFACTURER_HOOK')=='custom_hook' || (Configuration::get('YBC_MF_MANUFACTURER_HOOK')=='default' && Tools::getValue('controller')=='index'))
-        {
-            $this->context->controller->addCSS($this->_path.'views/css/ets_manufacturerslider.css','all');
-            $this->context->controller->addJS($this->_path.'views/js/owl.carousel.js'); 
-            $this->context->controller->addJS($this->_path.'views/js/ets_manufacturerslider.js');            
-            $this->context->controller->addCSS($this->_path.'views/css/owl.carousel.css','all');
-            $this->context->controller->addCSS($this->_path.'views/css/owl.theme.css','all');
-            $this->context->controller->addCSS($this->_path.'views/css/owl.transitions.css','all');
-            
-        }   
+        $this->context->controller->addCSS($this->_path.'views/css/ets_manufacturerslider.css','all');
+        $this->context->controller->addJS($this->_path.'views/js/owl.carousel.js'); 
+        $this->context->controller->addJS($this->_path.'views/js/ets_manufacturerslider.js');            
+        $this->context->controller->addCSS($this->_path.'views/css/owl.carousel.css','all');
+        $this->context->controller->addCSS($this->_path.'views/css/owl.theme.css','all');
+        $this->context->controller->addCSS($this->_path.'views/css/owl.transitions.css','all');
      }
 
     public function displayIframe()

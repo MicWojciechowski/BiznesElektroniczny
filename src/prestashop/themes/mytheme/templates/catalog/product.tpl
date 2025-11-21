@@ -240,9 +240,9 @@
       {/if}
     {/block}
 
-    <div id="test">
+    {block name='etsMan'}
         {hook h='etsManufacturer'}
-    </div>
+    {/block}
 
     {block name='product_footer'}
       {hook h='displayFooterProduct' product=$product category=$category}
