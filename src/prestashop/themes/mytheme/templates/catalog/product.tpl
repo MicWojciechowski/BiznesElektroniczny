@@ -240,6 +240,10 @@
       {/if}
     {/block}
 
+    <div id="test">
+        {hook h='etsManufacturer'}
+    </div>
+
     {block name='product_footer'}
       {hook h='displayFooterProduct' product=$product category=$category}
     {/block}
