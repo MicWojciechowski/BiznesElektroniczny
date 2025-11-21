@@ -152,17 +152,12 @@
     left: 50%;
     transform: translateX(-50%);
     
-    /* 3. Layout styles to make the list look right */
-    display: flex;       /* Makes the LIs sit side-by-side */
-    padding: 0;          /* Removes default browser padding */
-    margin: 0;           /* Removes default browser margin */
-    list-style: none;    /* Removes bullet points */
+    display: flex;       
+    padding: 0;          
+    margin: 0;       
+    list-style: none;
 }
 
 .footer-container .block-social ul li {
   background-color: #d5d2c4 !important;
-}
-
-#js-product-list-header {
-  display: none !important;
 }
