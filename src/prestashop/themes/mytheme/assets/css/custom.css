@@ -104,7 +104,6 @@
     background-color: #ffffff;
 }
 
-/* Force the main container to be full width */
 #wrapper .container,
 #header .container,
 #footer .container {
@@ -160,4 +159,41 @@
 
 .footer-container .block-social ul li {
   background-color: #d5d2c4 !important;
+}
+
+.block-social li.youtube a {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.block-social li.facebook a {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px 30px;
+}
+
+.block-social li.instagram a {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30px 30px;
+}
+
+.block-social li.facebook a::before,
+.block-social li.instagram a::before,
+.block-social li.youtube a::before {
+    content: none !important;
+    display: none !important;
+}
+
+.block-social li.instagram a {
+    background-image: url('../images/ig.png');
+}
+
+.block-social li.youtube a {
+    background-image: url('../iamges/youtube.png');
+}
+
+.block-social li.facebook a {
+    background-image: url('../images/facebook.png');  
 }
