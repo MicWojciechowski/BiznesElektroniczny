@@ -24,8 +24,24 @@
  *}
 {extends file=$layout}
 
-{block name='content'}
 
+{block name='breadcrumb'}
+  <nav data-depth="2" class="breadcrumb hidden-sm-down">
+    <ol>
+      <li>
+        <a href="{$urls.base_url}">
+          <span>{l s='Home' d='Shop.Theme.Global'}</span>
+        </a>
+      </li>
+
+      <li>
+        <span>{l s='Shopping Cart' d='Shop.Theme.Checkout'}</span>
+      </li>
+    </ol>
+  </nav>
+{/block}
+
+{block name='content'}
   <section id="main">
     <div class="cart-grid row">
 

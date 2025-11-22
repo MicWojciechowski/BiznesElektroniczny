@@ -68,7 +68,7 @@
 	    </div>
 
 	    <!-- CENTER COLUMN: SEARCH BAR -->
-	    <div class="col-md-6 col-sm-12">
+	    <div id="test" class="col-md-7 col-sm-12">
 	      {hook h='displaySearch'}
 	    </div>
 

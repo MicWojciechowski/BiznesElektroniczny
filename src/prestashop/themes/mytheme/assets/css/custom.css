@@ -1,3 +1,8 @@
+#test {
+  max-width:600px !important;
+  margin-left: 225px;
+}
+
 .col-md-6.text-center [id*="search"],
 .col-md-6.text-center .search-widget,
 .col-md-6.text-center form {
@@ -15,10 +20,9 @@
   justify-content: center;
 }
 
-#search_widget {
-  max-width: 300px !important; 
+#search_widget { 
+  max-width: 600px !important; 
   width: 100%;             
-  margin-left: -20px;      
 }
 
 .col-md-4.text-right {
@@ -78,10 +82,14 @@
     float: none !important;
 }
 
+#_desktop_top_menu .top-menu li a{
+    padding-left:65px;
+    padding-right:65px;
+}
+
 #_desktop_top_menu .top-menu {
     display: flex !important;
     justify-content: center;
-    gap: 20px;
 }
 
 .footer-container {
@@ -138,6 +146,10 @@
     display: none;
 }
 
+.header-top .block-social ul {
+    margin-bottom: 0px !important;
+}
+
 .header-top .block-social ul li {
   background-color: #f3f3ef !important;
 }
@@ -191,7 +203,7 @@
 }
 
 .block-social li.youtube a {
-    background-image: url('../iamges/youtube.png');
+    background-image: url('../images/youtube.png');
 }
 
 .block-social li.facebook a {
@@ -205,4 +217,72 @@
 .block-icon img {
   width: 50px;
   height: 50px !important;
+}
+
+#_desktop_user_info .dropdown_list {
+    display: none !important;
+}
+
+#_desktop_user_info:hover .dropdown_list,
+#_desktop_cart:hover .cart-dropdown {
+    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none; 
+}
+
+body#cart .breadcrumb,
+body#cart nav.breadcrumb,
+body#cart .breadcrumb-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.custom-search-pill {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    background: transparent;
+    border: none; 
+}
+
+.custom-search-pill .search_widget_text {
+    background-color: #fff;
+    border: 1px solid #e5e5e5; 
+    border-right: none;        
+    border-radius: 50px 0 0 50px; 
+    
+    height: 45px;
+    
+    width: 100%;
+    box-shadow: none !important;
+}
+
+.custom-search-pill .input-group-btn {
+    display: flex;
+    margin: 0;
+    height: 45px;
+    width: 60px !important;
+}
+
+.custom-search-pill .search_widget_btn {
+    background-color: #5e664f; 
+    color: #ffffff;
+    border: 1px solid #5e664f;     
+    border-radius: 0 50px 50px 0;
+    cursor: pointer;
+    height: 100%; 
+}
+
+.custom-search-pill .search_widget_btn:hover {
+    border-color: #5e664f;
+}
+
+.custom-search-pill .search_widget_text:hover {
+    border-color: #5e664f;
+    border-width: 2px;  
+}
+
+.input-group .input-group-btn>.btn {
+     padding:0px !important;
 }
