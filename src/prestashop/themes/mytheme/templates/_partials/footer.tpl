@@ -71,7 +71,6 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <p class="text-sm-center">
           {block name='copyright_link'}
 		<div class="footer-bottom d-flex justify-content-between p-2 border">
 		  <div class="text-decoration-none">© 2025 <span><a href="/">www.flyhouse.pl</a> | Wszystkie prawa zastrzeżone</span></div>
@@ -79,7 +78,7 @@
 | <a href="https://helpguru.eu/optymalizacja-dla-wyszukiwarek-seo" target="_blank">Pozycjonowanie SEO</a></span></div>
 		</div>
           {/block}
-        </p>
+        
       </div>
     </div>
   </div>
