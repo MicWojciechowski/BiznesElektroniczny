@@ -1,3 +1,17 @@
+.subcategory-name {
+color:black;
+}
+.subcategories-list {
+margin:0 !important;
+}
+#subcategories ul li{
+margin:5px !important;
+}
+
+.subcategory-image a{
+padding:0 !important;
+}
+
 #test {
      max-width:600px !important;
      margin-left: 225px;
@@ -9,6 +23,9 @@
 }
  .header-top{
      background-color:#f3f3ef !important;
+     padding-top:10px !important;
+     padding-bottom:10px !important;
+
 }
  .col-md-6.col-sm-12 {
      display: flex;
@@ -17,6 +34,7 @@
  #search_widget {
      max-width: 600px !important;
      width: 100%;
+     height:42px !important;
 }
  .col-md-4.text-right {
      display: flex;
@@ -181,12 +199,9 @@
  .block-social li.facebook a {
      background-image: url('../images/facebook.png');
 }
- .block-icon {
-     height: 50px !important;
-}
  .block-icon img {
-     width: 50px;
-     height: 50px !important;
+     width: 25px;
+     height: 25px !important;
 }
 #_desktop_user_info .dropdown_list {
      display: none !important;
@@ -226,23 +241,25 @@
 }
  .custom-search-pill .search_widget_text {
      background-color: #fff;
-     border: 1px solid #e5e5e5;
+     border: 2px solid #e2dfdc;
      border-right: none;
      border-radius: 50px 0 0 50px;
-     height: 45px;
+     height: 42px;
      width: 100%;
      box-shadow: none !important;
+     font-size:14px !important;
+     color: black !important;
 }
  .custom-search-pill .input-group-btn {
      display: flex;
      margin: 0;
-     height: 45px;
+     height: 42px;
      width: 60px !important;
 }
  .custom-search-pill .search_widget_btn {
      background-color: #5e664f;
      color: #ffffff;
-     border: 1px solid #5e664f;
+     border: 2px solid #5e664f;
      border-radius: 0 50px 50px 0;
      cursor: pointer;
      height: 100%;
@@ -278,4 +295,58 @@
 html, body {
     max-width: 100vw;
     overflow-x: clip;
+}
+
+#wrapper {
+    background-color:#ffffff;
+}
+#header {
+    box-shadow:none !important;
+}
+
+.container{
+    padding-left: 5px !important;	
+    padding-right: 5px !important;	
+}
+
+.header-nav {
+display:none;
+}
+
+.custom-reassurance {
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+}
+
+.custom-reassurance .block-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+.custom-reassurance .block-icon img {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.reassurance-text {
+    display: flex;
+    flex-direction: column; 
+    text-align:left;
+}
+
+.reassurance-text p {
+    font-size: 12px !important;
+    margin: 0;
+}
+
+.reassurance-text div {
+    font-size: 13px !important;
 }

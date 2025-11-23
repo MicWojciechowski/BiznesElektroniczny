@@ -28,7 +28,7 @@
         
         <div class="search_widget_form_inner input-group custom-search-pill">
             
-            <input type="text" class="form-control search_widget_text js-child-focus" name="s" value="{$search_string}" placeholder="{l s='Search our catalog' d='Shop.Theme.Catalog'}" aria-label="{l s='Search' d='Shop.Theme.Catalog'}" autocomplete="off">
+            <input type="text" class="form-control search_widget_text js-child-focus" name="s" value="{$search_string}" placeholder="{l s='Wpisz szukane słowo' d='Shop.Theme.Catalog'}" aria-label="{l s='Search' d='Shop.Theme.Catalog'}" autocomplete="off">
 
             <span class="input-group-btn">
                 <button class="btn btn-search search_widget_btn" type="submit">
