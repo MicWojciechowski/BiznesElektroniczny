@@ -1,3 +1,31 @@
+.block-categories i {
+width:24px !important;
+height:24px !important;
+color: #74160d !important;
+}
+
+.block-categories a.text-uppercase.h6{
+color: black !important;
+background: white !important;
+}
+
+.block-categories a {
+display:block;
+color: #74160d !important;
+background-color:white;
+padding-left: 10px;
+transition: all 0.2s ease-in-out;
+}
+
+.block-categories a:hover {
+color: white !important;
+background-color: #74160d !important;
+}
+
+.navbar-toggler.collapse-icons {
+background-color:white;
+}
+
 .subcategory-name {
 color:black;
 }
