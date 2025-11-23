@@ -55,6 +55,14 @@
      align-items: center;
      background-color: #d7d2c2;
 }
+
+#_desktop_top_menu.stuck {
+    position:fixed !important;
+    top:0 !important;
+    z-index:1000;
+    background-color: rgba(215,210,194,0.95);
+}
+
  #_desktop_top_menu .top-menu > li {
      float: none !important;
 }
@@ -223,3 +231,4 @@
  .input-group .input-group-btn>.btn {
      padding:0px !important;
 }
+
