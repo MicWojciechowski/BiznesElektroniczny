@@ -237,7 +237,39 @@ padding:0 !important;
      background-color: #ffffff;
      z-index:1;
      right: 115px;
+     padding:5px;
+   padding-left:20px; 
+padding-right:20px;
 }
+
+#_desktop_user_info .dropdown_list .line_name span{
+font-weight:700 !important;
+}
+
+
+#_desktop_user_info .dropdown_list ul li{
+	margin-bottom: 10px;
+	margin-top:10px;
+	text-align:left;
+	padding:3px;
+	transition: all 0.2s ease-in-out;
+}
+#_desktop_user_info .dropdown_list ul li a{
+	transition: all 0.2s ease-in-out;
+}
+
+#_desktop_user_info .dropdown_list ul li:hover{
+	background-color: #5c674c !important;
+}
+#_desktop_user_info .dropdown_list ul li.line_name:hover{
+	background-color: white !important;
+}
+
+
+#_desktop_user_info .dropdown_list ul li a:hover{
+	color:white !important;
+}
+
 
 #_desktop_user_info .account p {
      margin:0px; color: black; font-size:14px;
