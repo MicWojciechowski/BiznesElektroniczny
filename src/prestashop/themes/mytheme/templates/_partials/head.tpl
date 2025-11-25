@@ -79,10 +79,14 @@
 {block name='stylesheets'}
   {include file="_partials/stylesheets.tpl" stylesheets=$stylesheets}
   {*<link rel="stylesheet" href="https://localhost:8443/themes/mytheme/assets/css/flyhouse.css" type="text/css" media="all">*}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
 {/block}
 
 {block name='javascript_head'}
   {include file="_partials/javascript.tpl" javascript=$javascript.head vars=$js_custom_vars}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 {/block}
 
 {block name='hook_header'}
@@ -90,3 +94,4 @@
 {/block}
 
 {block name='hook_extra'}{/block}
+

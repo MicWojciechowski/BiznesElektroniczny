@@ -50,7 +50,11 @@
 
   <section id="main">
     <meta content="{$product.url}">
-
+{block name='page_header_container'}
+            {block name='page_header'}
+              <h1 class="h1">{block name='page_title'}{$product.name}{/block}</h1>
+            {/block}
+          {/block}
     <div class="row product-container js-product-container">
       <div class="col-md-6">
         {block name='page_content_container'}
@@ -71,11 +75,6 @@
         {/block}
         </div>
         <div class="col-md-6">
-          {block name='page_header_container'}
-            {block name='page_header'}
-              <h1 class="h1">{block name='page_title'}{$product.name}{/block}</h1>
-            {/block}
-          {/block}
           {block name='product_prices'}
             {include file='catalog/_partials/product-prices.tpl'}
           {/block}
@@ -140,6 +139,40 @@
 
             {block name='product_tabs'}
               <div class="tabs">
+                 {block name='product_details'}
+                   {include file='catalog/_partials/product-details.tpl'}
+                 {/block}
+
+                 {block name='product_attachments'}
+                   {if $product.attachments}
+                    <div class="tab-pane fade in" id="attachments" role="tabpanel">
+                       <section class="product-attachments">
+                         <p class="h5 text-uppercase">{l s='Download' d='Shop.Theme.Actions'}</p>
+                         {foreach from=$product.attachments item=attachment}
+                           <div class="attachment">
+                             <h4><a href="{url entity='attachment' params=['id_attachment' => $attachment.id_attachment]}">{$attachment.name}</a></h4>
+                             <p>{$attachment.description}</p>
+                             <a href="{url entity='attachment' params=['id_attachment' => $attachment.id_attachment]}">
+                               {l s='Download' d='Shop.Theme.Actions'} ({$attachment.file_size_formatted})
+                             </a>
+                           </div>
+                         {/foreach}
+                       </section>
+                     </div>
+                   {/if}
+                 {/block}
+
+                 {foreach from=$product.extraContent item=extra key=extraKey}
+                 <div class="tab-pane fade in {$extra.attr.class}" id="extra-{$extraKey}" role="tabpanel" {foreach $extra.attr as $key => $val} {$key}="{$val}"{/foreach}>
+                   {$extra.content nofilter}
+                 </div>
+                 {/foreach}
+              </div>
+            </div>
+          {/block}
+        </div>
+      </div>
+	
                 <ul class="nav nav-tabs" role="tablist">
                   {if $product.description}
                     <li class="nav-item">
@@ -186,45 +219,10 @@
                 <div class="tab-content" id="tab-content">
                  <div class="tab-pane fade in{if $product.description} active js-product-tab-active{/if}" id="description" role="tabpanel">
                    {block name='product_description'}
-                     <div class="product-description">{$product.description nofilter}</div>
+			<p>{$product.description|regex_replace:'/(\. |\.? $)/':'.</p><p>' nofilter}</p>
                    {/block}
                  </div>
-
-                 {block name='product_details'}
-                   {include file='catalog/_partials/product-details.tpl'}
-                 {/block}
-
-                 {block name='product_attachments'}
-                   {if $product.attachments}
-                    <div class="tab-pane fade in" id="attachments" role="tabpanel">
-                       <section class="product-attachments">
-                         <p class="h5 text-uppercase">{l s='Download' d='Shop.Theme.Actions'}</p>
-                         {foreach from=$product.attachments item=attachment}
-                           <div class="attachment">
-                             <h4><a href="{url entity='attachment' params=['id_attachment' => $attachment.id_attachment]}">{$attachment.name}</a></h4>
-                             <p>{$attachment.description}</p>
-                             <a href="{url entity='attachment' params=['id_attachment' => $attachment.id_attachment]}">
-                               {l s='Download' d='Shop.Theme.Actions'} ({$attachment.file_size_formatted})
-                             </a>
-                           </div>
-                         {/foreach}
-                       </section>
-                     </div>
-                   {/if}
-                 {/block}
-
-                 {foreach from=$product.extraContent item=extra key=extraKey}
-                 <div class="tab-pane fade in {$extra.attr.class}" id="extra-{$extraKey}" role="tabpanel" {foreach $extra.attr as $key => $val} {$key}="{$val}"{/foreach}>
-                   {$extra.content nofilter}
-                 </div>
-                 {/foreach}
-              </div>
-            </div>
-          {/block}
-        </div>
-      </div>
-    </div>
-
+</div>
     {block name='product_accessories'}
       {if $accessories}
         <section class="product-accessories clearfix">
@@ -240,9 +238,7 @@
       {/if}
     {/block}
 
-    {block name='etsMan'}
-        {hook h='etsManufacturer'}
-    {/block}
+    
 
     {block name='product_footer'}
       {hook h='displayFooterProduct' product=$product category=$category}
@@ -259,6 +255,10 @@
         {/block}
       </footer>
     {/block}
+    {block name='etsMan'}
+        {hook h='etsManufacturer'}
+    {/block}
+
   </section>
 
 {/block}
