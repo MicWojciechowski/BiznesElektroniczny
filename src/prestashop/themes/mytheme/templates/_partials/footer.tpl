@@ -36,6 +36,34 @@
         {hook h='displayFooter'}
       {/block}
     </div>
+
+    <div class="row">
+	<section class="col-lg-3 block footer_block rt_fb_like_box">
+    <div class="title_block">
+        <div class="title_block_inner">Facebook</div>
+        <div class="opener"><i class="fto-plus-2 plus_sign"></i><i class="fto-minus minus_sign"></i></div>
+    </div>
+
+    <div class="footer_block_content fb_like_box_warp">
+        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FFlyhousePL&amp;tabs=timeline&amp;width=270&amp;height=200" style="border: none;width: 270px;height: 200px;"></iframe>
+        <div id="fb-root"></div>
+        <script>
+        //<![CDATA[
+        
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+         
+        //]]>
+        </script>
+    </div>
+</section>
+    </div>
+
     <div class="row">
       {block name='hook_footer_after'}
         {hook h='displayFooterAfter'}
@@ -43,13 +71,14 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <p class="text-sm-center">
           {block name='copyright_link'}
-            <a href="https://www.prestashop.com" target="_blank" rel="noopener noreferrer nofollow">
-              {l s='%copyright% %year% - Ecommerce software by %prestashop%' sprintf=['%prestashop%' => 'PrestaShop™', '%year%' => 'Y'|date, '%copyright%' => '©'] d='Shop.Theme.Global'}
-            </a>
+		<div class="footer-bottom d-flex justify-content-between p-2 border">
+		  <div class="text-decoration-none">© 2025 <span><a href="/">www.flyhouse.pl</a> | Wszystkie prawa zastrzeżone</span></div>
+		  <div class="text-decoration-none"><span><a href="https://prestaguru.pl" target="_blank"> PrestaShop pomoc </a> 
+| <a href="https://helpguru.eu/optymalizacja-dla-wyszukiwarek-seo" target="_blank">Pozycjonowanie SEO</a></span></div>
+		</div>
           {/block}
-        </p>
+        
       </div>
     </div>
   </div>

@@ -22,13 +22,20 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<section class="featured-products clearfix mt-3">
+<div class="swiper category-products-carousel">
   <h2>
-    {if $products|@count == 1}
-      {l s='%s other product in the same category:' sprintf=[$products|@count] d='Shop.Theme.Catalog'}
-    {else}
-      {l s='%s other products in the same category:' sprintf=[$products|@count] d='Shop.Theme.Catalog'}
-    {/if}
+	Z TEJ SAMEJ KATEGORII
   </h2>
-  {include file="catalog/_partials/productlist.tpl" products=$products productClass="col-xs-12 col-sm-6 col-lg-4 col-xl-3"}
-</section>
+
+  <div class="swiper-wrapper">
+    {foreach $products as $product}
+      <div class="swiper-slide">
+        {include file='catalog/_partials/miniatures/product.tpl' product=$product}
+      </div>
+    {/foreach}
+  </div>
+
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
+</div>

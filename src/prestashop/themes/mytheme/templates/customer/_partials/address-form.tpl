@@ -38,11 +38,16 @@
       {block name="address_form_fields"}
         <section class="form-fields">
           {block name='form_fields'}
-            {foreach from=$formFields item="field"}
-              {block name='form_field'}
-                {form_field field=$field}
-              {/block}
-            {/foreach}
+		{foreach from=$formFields item="field"}
+		  {if $field.name == 'alias'}
+		      {* Hide the alias field and force a default value *}
+		      <input type="hidden" name="alias" value="{l s='My Address' d='Shop.Theme.Checkout'}">
+		  {else}
+		      {block name='form_field'}
+		        {form_field field=$field}
+		      {/block}
+		  {/if}
+		{/foreach}
           {/block}
         </section>
       {/block}
