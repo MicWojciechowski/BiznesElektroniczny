@@ -80,7 +80,7 @@
   {include file="_partials/stylesheets.tpl" stylesheets=$stylesheets}
   {*<link rel="stylesheet" href="https://localhost:8443/themes/mytheme/assets/css/flyhouse.css" type="text/css" media="all">*}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins|Poppins:600|Roboto&amp;subset=latin,latin-ext" media="all">
 {/block}
 
 {block name='javascript_head'}

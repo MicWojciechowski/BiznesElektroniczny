@@ -1,3 +1,17 @@
+body {
+  font-family: 'Poppins', 'Roboto', sans-serif;
+}
+
+.tab-content p {
+margin-bottom:24px;
+color:black;
+}
+.tab-content {
+padding-top:12px;
+padding-bottom:12px;
+font-size:14px;
+}
+
 .images-container {
   display: flex;
   align-items: flex-start;
