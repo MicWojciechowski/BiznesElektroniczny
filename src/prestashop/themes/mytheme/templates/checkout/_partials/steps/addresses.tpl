@@ -37,7 +37,7 @@
           {if $cart.is_virtual}
             {l s='The selected address will be used as your personal address (for invoice).' d='Shop.Theme.Checkout'}
           {else}
-            {l s='The selected address will be used both as your personal address (for invoice) and as your delivery address.' d='Shop.Theme.Checkout'}
+            {l s='Wybrany adres będzie zastosowany zarówno jako adres do faktury i jako adres dostawy.' d='Shop.Theme.Checkout'}
           {/if}
         </p>
       {else}

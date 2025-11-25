@@ -18,3 +18,26 @@ var relatedSwiper = new Swiper('.category-products-carousel', {
         480: { slidesPerView: 1 },
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const inputs = document.querySelectorAll('.js-address-form .form-control');
+
+    function checkContent(input) {
+        const row = input.closest('.form-group'); 
+        if (!row) return;
+
+        if (input.value.trim() !== "") {
+            row.classList.add('has-content');
+        } else {
+            row.classList.remove('has-content');
+        }
+    }
+
+    inputs.forEach(input => checkContent(input));
+
+    inputs.forEach(input => {
+        input.addEventListener('input', () => checkContent(input));
+        input.addEventListener('blur', () => checkContent(input));
+    });
+});
