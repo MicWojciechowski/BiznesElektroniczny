@@ -62,7 +62,7 @@ class Tester:
         add_btn = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "add-to-cart")))
         add_btn.click()
 
-        time.sleep(0.5)
+        time.sleep(1)
         continue_btn = wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(text(), 'Kontynuuj zakupy')]")
         ))
@@ -167,7 +167,7 @@ class Tester:
             print(f"Removing item {i + 1}...")
 
             delete_buttons[0].click()
-            time.sleep(0.5)
+            time.sleep(1)
 
         try:
             final_items = self.driver.find_elements(By.CLASS_NAME, "cart-item")
