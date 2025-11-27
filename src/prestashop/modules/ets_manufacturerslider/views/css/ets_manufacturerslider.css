@@ -1,0 +1,161 @@
+#ybc-mnf-block {
+  clear: left;
+  display: block;
+  margin: 30px 0 10px;
+  position: relative;
+  width: 100%;
+}
+#ybc-mnf-block .ybc-mnf-block-li {
+  float: left;
+  width: auto;
+}
+#ybc-mnf-block .owl-item .ybc-mnf-block-li {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: center;
+    -webkit-justify-content: center;
+}
+.ybc-mnf-block-li .ybc-mnf-block-a-name {
+    color: #666;
+}
+#ybc-mnf-block .owl-stage{
+    display: flex;
+    display: -webkit-flex;
+}
+#ybc-mnf-block .ybc-mnf-block-a-img {
+  width: 100%;
+  float: left;
+}
+.ybc-mnf-block-a-img > img {
+    float: none;
+    height: auto;
+    max-height: 120px;
+    max-width: 100%;
+    width: auto!important;
+    display: inline-block!important;
+}
+#ybc-mnf-block-ul {
+  display: block;
+  margin-bottom: 0;
+  padding-top: 10px;
+  position: static;
+  width: 100%;
+}
+#ybc-mnf-block-ul .owl-nav {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#ybc-mnf-block .ybc-mnf-block-title {
+    margin-top: 0;
+}
+#ybc-mnf-block-ul .owl-controls .owl-page, .owl-controls .owl-buttons div {
+  cursor: pointer;
+  height: 20px;
+  overflow: hidden;
+  width: 20px;
+  display: inline-block;
+}
+.ybc-mnf-block-a-name{
+    display: inline-block;
+    margin-top: 10px;
+}
+#ybc-mnf-block .owl-buttons .owl-next::before
+{
+  content: "\f061"; 
+  padding-left: 8px; 
+  font-family: FontAwesome;
+}
+#ybc-mnf-block .owl-buttons .owl-prev::before,
+#ybc-mnf-block .owl-buttons .owl-next::before
+ {
+  color: #e5e5e5; 
+  float: left;  
+  font-size: 15px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-weight: 300;
+ }
+ #ybc-mnf-block .owl-buttons .owl-next::before
+ {
+    margin-left: -1px;
+ }
+ #ybc-mnf-block .owl-buttons .owl-prev::before
+ {
+     content: "\f060";
+     font-family: FontAwesome;
+     border-right: 1px solid #e5e5e5;
+     padding-right:6px;
+ }
+ #ybc-mnf-block  .owl-buttons .owl-next:hover::before, 
+ #ybc-mnf-block  .owl-buttons .owl-prev:hover::before {
+  color: #acacac;
+}
+ #ybc-mnf-block .owl-prev.disabled:hover::before,
+ #ybc-mnf-block .owl-next.disabled:hover::before{
+  cursor: not-allowed;
+  opacity: 0.5;
+} 
+
+#ybc-mnf-block .owl-stage-outer {
+  display: block;
+  overflow: hidden;
+}
+#ybc-mnf-block .owl-prev:before {
+  border-left: 1px solid #999999;
+  border-top: 1px solid #999999;
+  content: "";
+  display: block;
+  height: 10px;
+  left: 50%;
+  margin-left: 2px;
+  margin-top: 0;
+  position: relative;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0px) rotate(-45deg);
+  -webkit-transform: translate3d(-50%, -50%, 0px) rotate(-45deg);
+  width: 10px;
+}
+#ybc-mnf-block .owl-next:before {
+  border-left: 1px solid #999999;
+  border-top: 1px solid #999999;
+  content: "";
+  display: block;
+  height: 10px;
+  left: 50%;
+  margin-left: -2px;
+  position: relative;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0px) rotate(135deg);
+  -webkit-transform: translate3d(-50%, -50%, 0px) rotate(135deg);
+  width: 10px;
+}
+#ybc-mnf-block .owl-nav > div {
+  background-color: #FFFFFF;
+  border: 1px solid #DEDEDE;
+  cursor: pointer;
+  display: inline-block;
+  height: 24px;
+  margin: 0 0 0 5px;
+  width: 24px;
+}
+#ybc-mnf-block-ul .owl-nav.hidden {
+  opacity: 0;
+  transition: all 0.35s ease 0s;
+  -webkit-transition: all 0.35s ease 0s;
+  visibility: hidden;
+}
+#ybc-mnf-block .owl-nav > div:hover:before {
+  border-color: #333333;
+}
+#ybc-mnf-block .owl-nav > div:hover {
+  border-color: #666666;
+}
