@@ -43,6 +43,65 @@ class Tester:
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
         self.driver.get(url)
 
+    def _admin_change_latest_order_status(self):
+        """
+        Helper: Opens a new tab, logs into Admin Panel,
+        changes the latest order status to 'Delivered' (ID 5) DIRECTLY from the list,
+        closes tab and returns to main window.
+        """
+        print("--- [ADMIN] Changing Order Status to Delivered ---")
+        wait = WebDriverWait(self.driver, 10)
+
+        self.driver.execute_script("window.open('about:blank', 'admin_tab');")
+        self.driver.switch_to.window("admin_tab")
+
+        self.driver.get("https://localhost:8443/admin473fxgo0y/")
+
+        try:
+            # Check if we need to log in
+            email_input = wait.until(EC.visibility_of_element_located((By.ID, "email")))
+            email_input.send_keys("s198251@student.pg.edu.pl")
+
+            pass_input = self.driver.find_element(By.ID, "passwd")
+            pass_input.send_keys("12345678")
+
+            submit_btn = self.driver.find_element(By.NAME, "submitLogin")
+            submit_btn.click()
+        except:
+            pass
+
+        parent_orders = wait.until(EC.element_to_be_clickable((By.ID, "subtab-AdminParentOrders")))
+        parent_orders.click()
+
+        try:
+            sub_orders = wait.until(EC.element_to_be_clickable((By.ID, "subtab-AdminOrders")))
+            sub_orders.click()
+        except:
+            pass
+
+        wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "table.grid-table")))
+
+        print("Locating status dropdown...")
+
+        dropdown_btn = wait.until(EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, "table tbody tr:first-child button.dropdown-toggle")
+        ))
+
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", dropdown_btn)
+        time.sleep(0.5)  # Stability wait
+        dropdown_btn.click()
+
+        delivered_option = wait.until(EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, "table tbody tr:first-child button.dropdown-item[data-value='5']")
+        ))
+        delivered_option.click()
+
+        time.sleep(2)
+        print("--- [ADMIN] Status updated to 'Delivered' ---")
+
+        self.driver.close()
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
     def _process_product(self, product_index, quantity):
         """
         Helper: Otwiera produkt z listy (np. po wyszukaniu czy wybraniu kategorii)
@@ -289,7 +348,8 @@ class Tester:
 
         wait = WebDriverWait(self.driver, 10)
 
-        input("Kontynuuj tylko po zatwierdzeniu zamówienia w admin panelu")
+        # input("Kontynuuj tylko po zatwierdzeniu zamówienia w admin panelu")
+        self._admin_change_latest_order_status()
         self.driver.get(self.driver.current_url)
         invoice_link = wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//table/tbody/tr[1]//a[contains(@href, 'pdf-invoice')]")
