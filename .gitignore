@@ -8,3 +8,4 @@ prestashop/var/logs
 prestashop/var/sessions
 prestashop/var/modules
 prestashop/themes/*/assets/cache/
+*.zip
