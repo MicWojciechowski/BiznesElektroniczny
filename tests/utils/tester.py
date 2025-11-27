@@ -15,8 +15,8 @@ from selenium import webdriver
 class Tester:
     def __init__(self, url=cfg.URL):
         HOME = os.path.expanduser("~")
-        # BINARY_PATH = os.path.join(HOME, "chrome", "chrome-linux64", "chrome")
-        BINARY_PATH = os.path.join(HOME, ".nix-profile", "bin", "google-chrome-stable")
+        BINARY_PATH = os.path.join(HOME, "chrome", "chrome-linux64", "chrome")
+        #BINARY_PATH = os.path.join(HOME, ".nix-profile", "bin", "google-chrome-stable")
 
         WEBDRIVER_PATH = os.path.join(
             HOME, "chrome", "chromedriver-linux64", "chromedriver"
@@ -62,7 +62,7 @@ class Tester:
         add_btn = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "add-to-cart")))
         add_btn.click()
 
-        time.sleep(1)
+        time.sleep(5)
         continue_btn = wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(text(), 'Kontynuuj zakupy')]")
         ))
