@@ -279,12 +279,25 @@ class Tester:
         order_status = status_element.text.strip()
         print(f"Latest Order Status: {order_status}")
 
+        # wait.until(EC.element_to_be_clickable((By.ID, "_desktop_logo"))).click()
         pass
 
     def test7(self):
         """
         Pobranie faktury VAT.
         """
+
+        wait = WebDriverWait(self.driver, 10)
+
+        input("Kontynuuj tylko po zatwierdzeniu zamówienia w admin panelu")
+        self.driver.get(self.driver.current_url)
+        invoice_link = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//table/tbody/tr[1]//a[contains(@href, 'pdf-invoice')]")
+        ))
+        invoice_link.click()
+        time.sleep(2)
+        wait.until(EC.element_to_be_clickable((By.ID, "_desktop_logo"))).click()
+
         pass
 
     def run_all(self):
@@ -309,13 +322,14 @@ class Tester:
         self.test5()
         # print("skipped")
 
+        # Między testem 6 a 7 nie wychodzi ze statusów zamówień
         print("=== TEST 6 ===")
         self.test6()
         # print("skipped")
 
         print("=== TEST 7 ===")
-        # self.test7()
-        print("skipped")
+        self.test7()
+        # print("skipped")
 
     def quit(self):
         self.driver.quit()
