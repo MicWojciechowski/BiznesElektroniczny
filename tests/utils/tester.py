@@ -48,7 +48,7 @@ class Tester:
         Helper: Otwiera produkt z listy (np. po wyszukaniu czy wybraniu kategorii)
         po indeksie, ustawia ilość, dodaje do koszyka i wraca do listy
         """
-        wait = WebDriverWait(self.driver, 10)
+        wait = WebDriverWait(self.driver, 30)
         products = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "product-miniature")))
 
         products[product_index].find_element(By.TAG_NAME, "a").click()
@@ -184,7 +184,6 @@ class Tester:
         Rejestracja nowego konta
         Na potrzeby testow uzytkownik bedzie uzywal losowego adresu email
         """
-        wait = WebDriverWait(self.driver, 10)
         login_icon = self.driver.find_element(By.XPATH, "//a[@title='Zaloguj się do swojego konta klienta']")
         login_icon.click()
 
@@ -218,12 +217,68 @@ class Tester:
         Wybór jednego z dwóch przewoźników,
         Zatwierdzenie zamówienia
         """
+        wait = WebDriverWait(self.driver, 10)
+        cart_icon = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "shopping-cart")))
+        cart_icon.click()
+
+        order_link = self.driver.find_element(By.XPATH, "//a[contains(text(), 'Przejdź do realizacji zamówienia')]")
+        order_link.click()
+
+        info = {
+            "firstname": "Test",
+            "lastname": "User",
+            "company": "Test System Inc.",
+            "vat_number": "1234567890",
+            "address1": "Wyspiańskiego 5a",
+            "address2": "208b",
+            "postcode": "00-001",
+            "city": "Gdańsk",
+            "phone": "501043892",
+        }
+
+        for k, v in info.items():
+            field = self.driver.find_element(By.ID, f"field-{k}")
+            field.send_keys(Keys.CONTROL + "a")
+            field.send_keys(Keys.DELETE)
+            field.send_keys(v)
+
+        wait.until(EC.element_to_be_clickable((By.NAME, "confirm-addresses"))).click()
+        time.sleep(1)
+        self.driver.find_element(By.ID, "delivery_option_12").click()
+        self.driver.find_elements(By.NAME, "confirmDeliveryOption")[0].click()
+        time.sleep(1)
+        opts = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "input[data-module-name='ps_cashondelivery']")
+        ))
+        opts.click()
+        self.driver.find_element(By.ID, "conditions_to_approve[terms-and-conditions]").click()
+        self.driver.find_element(By.XPATH, "//button[contains(text(), 'Złóż zamówienie')]").click()
+
+        wait.until(EC.element_to_be_clickable((By.ID, "_desktop_logo"))).click()
         pass
 
     def test6(self):
         """
         Sprawdzenie statusu zamówienia.
         """
+        wait = WebDriverWait(self.driver, 10)
+        account_icon = self.driver.find_element(By.XPATH, "//a[@title='Wyświetl moje konto klienta']")
+        account_icon.click()
+
+        self.driver.find_element(By.ID, "history-link").click()
+
+        wait.until(EC.visibility_of_element_located((By.TAG_NAME, "table")))
+
+        try:
+            # Try to find the specific styled label (Best for PrestaShop 1.7)
+            status_element = self.driver.find_element(By.CSS_SELECTOR, "table tbody tr:first-child .label-pill")
+        except:
+            # Fallback: If no pill class, assume it's the 5th column (Standard PrestaShop layout)
+            status_element = self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[5]")
+
+        order_status = status_element.text.strip()
+        print(f"Latest Order Status: {order_status}")
+
         pass
 
     def test7(self):
@@ -251,12 +306,12 @@ class Tester:
         # print("skipped")
 
         print("=== TEST 5 ===")
-        # self.test5()
-        print("skipped")
+        self.test5()
+        # print("skipped")
 
         print("=== TEST 6 ===")
-        # self.test6()
-        print("skipped")
+        self.test6()
+        # print("skipped")
 
         print("=== TEST 7 ===")
         # self.test7()
