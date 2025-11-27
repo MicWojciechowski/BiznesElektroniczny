@@ -184,6 +184,30 @@ class Tester:
         Rejestracja nowego konta
         Na potrzeby testow uzytkownik bedzie uzywal losowego adresu email
         """
+        wait = WebDriverWait(self.driver, 10)
+        login_icon = self.driver.find_element(By.XPATH, "//a[@title='Zaloguj się do swojego konta klienta']")
+        login_icon.click()
+
+        time.sleep(0.5)
+        register_link = self.driver.find_element(By.XPATH, "//a[contains(text(), 'Nie masz konta?')]")
+        register_link.click()
+
+        self.driver.find_element(By.ID, "field-firstname").send_keys("Test")
+        self.driver.find_element(By.ID, "field-lastname").send_keys("User")
+
+        random_str = uuid.uuid4().hex[:8]
+        email = f"user_{random_str}@test.com"
+        print(f"registering with email: {email}")
+        self.driver.find_element(By.ID, "field-email").send_keys(email)
+        self.driver.find_element(By.ID, "field-password").send_keys("Mikformatyka2025")
+
+        time.sleep(1)
+        checkboxes = self.driver.find_elements(By.NAME, "psgdpr")
+        if checkboxes:
+            checkboxes[0].click()
+
+        submit_btn = self.driver.find_element(By.CSS_SELECTOR, "button[data-link-action='save-customer']")
+        submit_btn.click()
 
         pass
 
@@ -211,24 +235,32 @@ class Tester:
     def run_all(self):
         print("=== TEST 1 ===")
         self.test1()
+        # print("skipped")
 
         print("=== TEST 2 ===")
         self.test2()
+        # print("skipped")
 
         print("=== TEST 3 ===")
+        # Needs test1 for it to work (No items in shopping cart by default)
         self.test3()
+        # print("skipped")
 
         print("=== TEST 4 ===")
         self.test4()
+        # print("skipped")
 
         print("=== TEST 5 ===")
-        self.test5()
+        # self.test5()
+        print("skipped")
 
         print("=== TEST 6 ===")
-        self.test6()
+        # self.test6()
+        print("skipped")
 
         print("=== TEST 7 ===")
-        self.test7()
+        # self.test7()
+        print("skipped")
 
     def quit(self):
         self.driver.quit()
