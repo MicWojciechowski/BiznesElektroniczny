@@ -2,7 +2,10 @@ services:
   prestashop:
     image: oskarw7/biznes-elektroniczny
     ports:
-      - "19779:443"
+      #- "19779:443"
+      - target: 443
+        published: 19779
+        mode: host
     environment:
       - PS_DEV_MODE=1
       - DB_SERVER=admin-mysql_db
@@ -10,6 +13,10 @@ services:
       - DB_USER=root
       - DB_PASSWD=student
     command: /bin/bash -c "a2enmod ssl && apache2-foreground"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == student-swarm01 #temp, for testing purposed and quicker stack deployment
     networks:
       - admin-mysql_default
 
