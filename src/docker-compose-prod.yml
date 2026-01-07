@@ -14,12 +14,21 @@ services:
       - DB_PASSWD=student
     command: /bin/bash -c "a2enmod ssl && apache2-foreground"
     deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2.0G
+        reservations:
+          cpus: "1.0"
+          memory: 1.0G
       placement:
         constraints:
           - node.hostname == student-swarm01 #temp, for testing purposed and quicker stack deployment
     networks:
+      - prestashop_default
       - admin-mysql_default
 
 networks:
+  prestashop_default:
   admin-mysql_default:
     external: true
