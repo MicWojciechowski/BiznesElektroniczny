@@ -31,11 +31,11 @@ jobs:
       with:
         push: true
         context: ./src
-        file: ./Dockerfile
+        file: ./src/Dockerfile
         tags: belektroniczny/biznes-elektroniczny
 
 
     - name: Test Docker image locally
       run: |
-        docker pull belektroniczny-biznes-elektroniczny
+        docker pull belektroniczny/biznes-elektroniczny
         echo "Docker image built and pushed"
