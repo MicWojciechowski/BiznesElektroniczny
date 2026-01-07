@@ -1,4 +1,3 @@
-
 services:
   prestashop:
     image: prestashop/prestashop:1.7.8
