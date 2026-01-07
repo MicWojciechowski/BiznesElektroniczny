@@ -38,4 +38,4 @@ jobs:
     - name: Test Docker image locally
       run: |
         docker pull belektroniczny-biznes-elektroniczny
-        echo "Docker image built and pushed successfully"
+        echo "Docker image built and pushed"
