@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         context: ./src
-        file: ./prestashop/Dockerfile
+        file: ./Dockerfile
         tags: belektroniczny/biznes-elektroniczny
 
 
