@@ -1,0 +1,34 @@
+services:
+  prestashop:
+    image: oskarw7/biznes-elektroniczny
+    ports:
+      #- "19779:443"
+      - target: 443
+        published: 19779
+        mode: host
+    environment:
+      - PS_DEV_MODE=1
+      - DB_SERVER=admin-mysql_db
+      - DB_NAME=BE_197797
+      - DB_USER=root
+      - DB_PASSWD=student
+    command: /bin/bash -c "a2enmod ssl && apache2-foreground"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2.0G
+        reservations:
+          cpus: "1.0"
+          memory: 1.0G
+      placement:
+        constraints:
+          - node.hostname == student-swarm01 #temp, for testing purposed and quicker stack deployment
+    networks:
+      - prestashop_default
+      - admin-mysql_default
+
+networks:
+  prestashop_default:
+  admin-mysql_default:
+    external: true

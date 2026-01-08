@@ -90,7 +90,7 @@
 	  <div class="dropdown_box login_from_block">
 	    <div class="sidebar_login_form">
 	      <h5>Witaj, jeśli masz już konto, zaloguj się.</h5>
-	      <form action="https://localhost:8443/pl/logowanie" method="post">
+	      <form action="https://localhost:8443/logowanie" method="post">
 	        <div class="form_content">
 	          <input type="hidden" name="back" value="my-account">
 	          <div class="form-group form-group-small    animation_placeholder placeholder_error_5 fields_border_2 email_style">
@@ -127,7 +127,7 @@
 	            </div>
 	          </div>
 	          <div class="form-group forgot-password">
-	            <a href="https://localhost:8443/pl/odzyskiwanie-hasla" rel="nofollow" title="Nie pamiętasz hasła?"> Nie pamiętasz hasła? </a>
+	            <a href="https://localhost:8443/odzyskiwanie-hasla" rel="nofollow" title="Nie pamiętasz hasła?"> Nie pamiętasz hasła? </a>
 	          </div>
 	        </div>
 	        <div class="form-footer">
