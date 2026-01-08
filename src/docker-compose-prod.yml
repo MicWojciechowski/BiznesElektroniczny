@@ -1,6 +1,6 @@
 services:
   prestashop:
-    image: oskarw7/biznes-elektroniczny
+    image: belektroniczny/be_197797_prestashop
     ports:
       #- "19779:443"
       - target: 443
