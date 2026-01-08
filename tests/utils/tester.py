@@ -40,7 +40,7 @@ class Tester:
         chrome_options.binary_location = BINARY_PATH
 
         if prd: url=cfg.URL_PRD
-
+        self.prd=prd
         service = Service(executable_path=WEBDRIVER_PATH)
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
         self.driver.get(url)
@@ -58,7 +58,7 @@ class Tester:
         self.driver.switch_to.window("admin_tab")
 
         admin_url = cfg.URL_ADMIN
-        if prd: admin_url = URL_ADMIN_PRD
+        if self.prd: admin_url = cfg.URL_ADMIN_PRD
         self.driver.get(admin_url)
 
         try:
