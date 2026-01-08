@@ -13,7 +13,7 @@ from selenium import webdriver
 
 
 class Tester:
-    def __init__(self, url=cfg.URL):
+    def __init__(self, prd=False, url=cfg.URL):
         HOME = os.path.expanduser("~")
         BINARY_PATH = os.path.join(HOME, "chrome", "chrome-linux64", "chrome")
         #BINARY_PATH = os.path.join(HOME, ".nix-profile", "bin", "google-chrome-stable")
@@ -39,6 +39,8 @@ class Tester:
         chrome_options.add_experimental_option("prefs", prefs)
         chrome_options.binary_location = BINARY_PATH
 
+        if prd: url=cfg.URL_PRD
+        self.prd=prd
         service = Service(executable_path=WEBDRIVER_PATH)
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
         self.driver.get(url)
@@ -55,7 +57,9 @@ class Tester:
         self.driver.execute_script("window.open('about:blank', 'admin_tab');")
         self.driver.switch_to.window("admin_tab")
 
-        self.driver.get("https://localhost:8443/admin473fxgo0y/")
+        admin_url = cfg.URL_ADMIN
+        if self.prd: admin_url = cfg.URL_ADMIN_PRD
+        self.driver.get(admin_url)
 
         try:
             # Check if we need to log in

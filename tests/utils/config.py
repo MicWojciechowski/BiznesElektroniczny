@@ -1,26 +1,7 @@
 URL = "https://localhost:8443"
+URL_PRD = "https://localhost:19779"
 
+URL_ADMIN = "https://localhost:8443/admin473fxgo0y/"
+URL_ADMIN_PRD = "https://localhost:19779/admin473fxgo0y/"
 
 CART_OPEN="blockcart.cart-preview.active"
-CART_CLOSE=""
-CART_PQ=""
-CART_SUBMIT=""
-
-ADD_TO_CART=""
-DELETE_FROM_CART=""
-
-
-SEARCH=""
-
-
-REGISTER_OPEN=""
-REGISTER_NAME=""
-REGISTER_SURNAME=""
-REGISTER_SUBMIT=""
-
-
-PAYMENT_OPTION=""
-DELIVERY=""
-ORDER=""
-
-RECEIPT=""

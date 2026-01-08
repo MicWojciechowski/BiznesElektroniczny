@@ -45,16 +45,16 @@
 	      <span>Witaj {$customer.firstname}!</span>
 	    </li>
 	    <li>
-	      <a href="https://localhost:8443/moje-konto" title="Przejdź do swojego konta w sklepie" rel="nofollow" class="dropdown_list_item">Moje konto</a>
+	      <a href="https://localhost:19779/moje-konto" title="Przejdź do swojego konta w sklepie" rel="nofollow" class="dropdown_list_item">Moje konto</a>
 	    </li>
 	    <li>
 	      <a href="https://flyhouse.pl/pl/moje-dane" rel="nofollow" class="dropdown_list_item" title="Moje dane">Moje dane</a>
 	    </li>
 	    <li>
-	      <a href="https://localhost:8443/moje-adresy" rel="nofollow" class="dropdown_list_item" title="Moje adresy">Moje adresy</a>
+	      <a href="https://localhost:19779/moje-adresy" rel="nofollow" class="dropdown_list_item" title="Moje adresy">Moje adresy</a>
 	    </li>
 	    <li>
-	      <a href="https://localhost:8443/historia-zamowien" rel="nofollow" class="dropdown_list_item" title="Moje zamówienia">Moje zamówienia</a>
+	      <a href="https://localhost:19779/historia-zamowien" rel="nofollow" class="dropdown_list_item" title="Moje zamówienia">Moje zamówienia</a>
 	    </li>
 	    <li>
 	      <a href="https://flyhouse.pl/pl/zwroty-produktow" rel="nofollow" class="dropdown_list_item" title="Zwroty produktów">Zwroty produktów</a>
@@ -72,7 +72,7 @@
 	      <a href="https://flyhouse.pl/pl/moje-zgody-rodo" rel="nofollow" class="dropdown_list_item" title="Moje zgody">Moje zgody</a>
 	    </li>
 	    <li class="logoff_last">
-	      <a href="https://localhost:8443/?mylogout=" rel="nofollow" class="dropdown_list_item " title="Wyloguj się ze swojego konta">
+	      <a href="https://localhost:19779/?mylogout=" rel="nofollow" class="dropdown_list_item " title="Wyloguj się ze swojego konta">
 	        <i class="fto-logout-1"></i> Wyloguj się </a>
 	    </li>
 	  </ul>
@@ -90,7 +90,7 @@
 	  <div class="dropdown_box login_from_block">
 	    <div class="sidebar_login_form">
 	      <h5>Witaj, jeśli masz już konto, zaloguj się.</h5>
-	      <form action="https://localhost:8443/pl/logowanie" method="post">
+	      <form action="https://localhost:19779/logowanie" method="post">
 	        <div class="form_content">
 	          <input type="hidden" name="back" value="my-account">
 	          <div class="form-group form-group-small    animation_placeholder placeholder_error_5 fields_border_2 email_style">
@@ -127,7 +127,7 @@
 	            </div>
 	          </div>
 	          <div class="form-group forgot-password">
-	            <a href="https://localhost:8443/pl/odzyskiwanie-hasla" rel="nofollow" title="Nie pamiętasz hasła?"> Nie pamiętasz hasła? </a>
+	            <a href="https://localhost:19779/odzyskiwanie-hasla" rel="nofollow" title="Nie pamiętasz hasła?"> Nie pamiętasz hasła? </a>
 	          </div>
 	        </div>
 	        <div class="form-footer">
@@ -138,7 +138,15 @@
 	    </div>
 	    <div class="sidebar_auth_form">
 	      <h5>Jesteś nowym użytkownikiem?</h5>
-	      <a class="btn btn-border btn-full-width btn_arrow black_arrow btn-spin js-submit-active" href="https://localhost:8443/pl/logowanie?create_account=1" rel="nofollow" title="Zarejestruj się"> Zarejestruj się </a>
+	     {literal}
+<a class="btn btn-border btn-full-width btn_arrow black_arrow btn-spin js-submit-active"
+   href="https://localhost:19779/logowanie?create_account=1"
+   rel="nofollow"
+   title="Zarejestruj się"
+   onclick="gtag('event', 'zarejestrujSie', { send_to: 'G-HRNVV56DDD' });">
+   Zarejestruj się
+</a>
+{/literal}
 	    </div>
 	  </div>
 	</div>
