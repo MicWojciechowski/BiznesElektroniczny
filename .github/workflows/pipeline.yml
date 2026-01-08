@@ -32,10 +32,10 @@ jobs:
         push: true
         context: ./src
         file: ./src/Dockerfile
-        tags: belektroniczny/biznes-elektroniczny
+        tags: belektroniczny/be_197797_prestashop
 
 
     - name: Test Docker image locally
       run: |
-        docker pull belektroniczny/biznes-elektroniczny
+        docker pull belektroniczny/be_197797_prestashop
         echo "Docker image built and pushed"
