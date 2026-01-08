@@ -138,7 +138,15 @@
 	    </div>
 	    <div class="sidebar_auth_form">
 	      <h5>Jesteś nowym użytkownikiem?</h5>
-	      <a class="btn btn-border btn-full-width btn_arrow black_arrow btn-spin js-submit-active" href="https://localhost:8443/pl/logowanie?create_account=1" rel="nofollow" title="Zarejestruj się"> Zarejestruj się </a>
+	     {literal}
+<a class="btn btn-border btn-full-width btn_arrow black_arrow btn-spin js-submit-active"
+   href="https://localhost:8443/pl/logowanie?create_account=1"
+   rel="nofollow"
+   title="Zarejestruj się"
+   onclick="gtag('event', 'zarejestrujSie', { send_to: 'G-HRNVV56DDD' });">
+   Zarejestruj się
+</a>
+{/literal}
 	    </div>
 	  </div>
 	</div>
